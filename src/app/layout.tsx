@@ -14,10 +14,43 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://loviraapp.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Lovira — Couple wellness",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Lovira — Couple wellness",
+    template: "%s · Lovira",
+  },
   description:
-    "Understand each other better with cycle awareness, mood check-ins, and gentle partner support.",
+    "Understand each other better with cycle awareness, mood check-ins, and gentle partner support. Private, local-first wellness for couples.",
+  applicationName: "Lovira",
+  keywords: [
+    "couple wellness",
+    "cycle tracking",
+    "mood check-in",
+    "partner support",
+    "relationship wellness",
+  ],
+  authors: [{ name: "Lovira" }],
+  creator: "Lovira",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Lovira",
+    title: "Lovira — Couple wellness",
+    description:
+      "Cycle awareness, daily mood check-ins, and gentle partner support — saved privately on your device.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lovira — Couple wellness",
+    description:
+      "Cycle awareness, mood check-ins, and partner support for couples.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
