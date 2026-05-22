@@ -54,33 +54,33 @@ export function getCoupleInsight(
   if (oneTenderOneQuiet || oneNeedsSpace) {
     return {
       title: "Couple insight",
-      message: "One may need closeness, one may need quiet — both are valid.",
+      message: "Closeness and quiet can both be love — honor what each of you needs.",
     };
   }
 
   if (oneHopeful && !bothHeavy) {
     return {
       title: "Couple insight",
-      message: "A good day for simple kindness — walk, warmth, or honest thanks.",
+      message: "A gentle day between you — warmth without pressure.",
     };
   }
 
   if (partnerCheckIn.supportIntention && primary) {
     return {
       title: "Couple insight",
-      message: "You are both checking in — meet each other where you are.",
+      message: "You are both showing up — meet each other where you are.",
     };
   }
 
   if (primaryMoods.length === 0 && partnerMoods.length === 0) {
     return {
       title: "Couple insight",
-      message: "Small check-ins help — neither person has to carry it all.",
+      message: "A small check-in can make the evening feel less alone.",
     };
   }
 
   return {
     title: "Couple insight",
-    message: "Simple kindness beats heavy talks today.",
+    message: "Simple kindness often lands better than a heavy talk.",
   };
 }

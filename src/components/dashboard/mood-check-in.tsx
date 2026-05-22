@@ -1,7 +1,7 @@
 "use client";
 
 import { MOODS } from "@/lib/mood";
-import { MOOD_EMOJI_OVERRIDES } from "@/lib/visual-copy";
+import { getMoodGlance } from "@/lib/visual-copy";
 import type { MoodId } from "@/types/app";
 import { EmotionChip } from "@/components/ui/emotion-chip";
 
@@ -16,8 +16,8 @@ export function MoodCheckIn({ selected, onToggle }: MoodCheckInProps) {
       {MOODS.map((mood) => (
         <EmotionChip
           key={mood.id}
-          emoji={MOOD_EMOJI_OVERRIDES[mood.id] ?? mood.emoji}
-          label={mood.label}
+          emoji={getMoodGlance(mood.id).emoji}
+          label={getMoodGlance(mood.id).short}
           active={selected.includes(mood.id)}
           onClick={() => onToggle(mood.id)}
           size="lg"

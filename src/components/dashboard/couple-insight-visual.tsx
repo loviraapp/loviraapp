@@ -3,10 +3,10 @@
 import type { CoupleInsight, MoodId, PartnerMoodId } from "@/types/app";
 import { getMoodById } from "@/lib/mood";
 import { getPartnerMoodById } from "@/lib/partner-mood";
-import { MOOD_EMOJI_OVERRIDES } from "@/lib/visual-copy";
+import { MOOD_GLANCE } from "@/lib/visual-copy";
 
 function moodEmoji(id: MoodId | PartnerMoodId, fallback: string): string {
-  return MOOD_EMOJI_OVERRIDES[id] ?? fallback;
+  return MOOD_GLANCE[id as MoodId]?.emoji ?? fallback;
 }
 
 type CoupleInsightVisualProps = {

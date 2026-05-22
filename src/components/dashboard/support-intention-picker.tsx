@@ -3,6 +3,14 @@
 import type { SupportIntention } from "@/types/app";
 import { SUPPORT_INTENTIONS } from "@/lib/partner-check-in";
 
+const SHORT: Record<SupportIntention, string> = {
+  listening: "Listen",
+  tasks: "Help",
+  space: "Space",
+  calm_time: "Calm",
+  kind_message: "Message",
+};
+
 type SupportIntentionPickerProps = {
   value: SupportIntention | null;
   onChange: (intention: SupportIntention) => void;
@@ -14,11 +22,10 @@ export function SupportIntentionPicker({
 }: SupportIntentionPickerProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground">
-        I can support today by…{" "}
-        <span className="font-normal text-muted">(optional)</span>
+      <p className="text-xs font-medium uppercase tracking-wide text-muted">
+        Support intention
       </p>
-      <div className="mt-3 space-y-2">
+      <div className="mt-2 flex flex-wrap gap-2">
         {SUPPORT_INTENTIONS.map((item) => {
           const active = value === item.id;
           return (
@@ -26,21 +33,14 @@ export function SupportIntentionPicker({
               key={item.id}
               type="button"
               onClick={() => onChange(item.id)}
-              className={`w-full rounded-2xl border px-4 py-3 text-left transition-all ${
+              className={`rounded-full px-3.5 py-2 text-xs font-medium transition-all ${
                 active
-                  ? "border-secondary bg-secondary-soft ring-2 ring-secondary/25"
-                  : "border-border bg-card hover:border-primary/25"
+                  ? "bg-secondary text-white shadow-sm"
+                  : "bg-card text-muted"
               }`}
               aria-pressed={active}
             >
-              <span
-                className={`text-sm font-medium ${active ? "text-secondary-deep" : "text-foreground"}`}
-              >
-                {item.label}
-              </span>
-              <span className="mt-0.5 block text-xs text-muted">
-                {item.description}
-              </span>
+              {SHORT[item.id]}
             </button>
           );
         })}

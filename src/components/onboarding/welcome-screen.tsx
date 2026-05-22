@@ -17,31 +17,31 @@ export function WelcomeScreen() {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-12 sm:py-16">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-        Welcome to Lovira
+    <div className="mx-auto max-w-md px-4 py-12 sm:py-16">
+      <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary">
+        Lovira
       </p>
-      <h1 className="mt-3 font-display text-3xl text-foreground sm:text-4xl">
-        Understand each other better.
+      <h1 className="mt-3 font-display text-3xl text-foreground">
+        Understand each other.
       </h1>
-      <p className="mt-3 text-sm text-muted">
-        Same dashboard for both — choose what fits you today.
+      <p className="mt-2 text-sm text-muted">
+        Each partner checks in on their own — pick your role on this device.
       </p>
 
       <div className="mt-8 space-y-3">
         <RoleOptionCard
           role="tracking"
           emoji="🌿"
-          title="I am tracking my emotional rhythm"
-          subtitle="Private moods, optional cycle context, gentle insights."
+          title="Track my rhythm"
+          subtitle="Moods · insights · optional context."
           selected={selected === "tracking"}
           onSelect={() => setSelected("tracking")}
         />
         <RoleOptionCard
           role="support"
           emoji="🤝"
-          title="I am here to support my partner"
-          subtitle="Partner check-in first — mood, energy, how to show up."
+          title="Support my partner"
+          subtitle="Show up · energy · gentle intentions."
           selected={selected === "support"}
           onSelect={() => setSelected("support")}
         />
@@ -51,14 +51,10 @@ export function WelcomeScreen() {
         type="button"
         onClick={handleContinue}
         disabled={!selected}
-        className="mt-8 w-full rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-8 w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-opacity disabled:opacity-40"
       >
-        Continue to dashboard
+        Continue
       </button>
-
-      <p className="mt-6 text-center text-xs text-muted">
-        Saved on this device only · change anytime in settings later
-      </p>
     </div>
   );
 }

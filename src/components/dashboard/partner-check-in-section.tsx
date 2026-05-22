@@ -2,7 +2,8 @@
 
 import type { PartnerCheckIn, PartnerMoodId } from "@/types/app";
 import { PARTNER_MOODS } from "@/lib/partner-mood";
-import { MOOD_EMOJI_OVERRIDES } from "@/lib/visual-copy";
+import { MOOD_GLANCE } from "@/lib/visual-copy";
+import type { MoodId } from "@/types/app";
 import { EmotionChip } from "@/components/ui/emotion-chip";
 import { EnergySelector } from "./energy-selector";
 import { SupportIntentionPicker } from "./support-intention-picker";
@@ -32,8 +33,10 @@ export function PartnerCheckInSection({
           {PARTNER_MOODS.map((mood) => (
             <EmotionChip
               key={mood.id}
-              emoji={MOOD_EMOJI_OVERRIDES[mood.id] ?? mood.emoji}
-              label={mood.label}
+              emoji={
+                MOOD_GLANCE[mood.id as MoodId]?.emoji ?? mood.emoji
+              }
+              label={MOOD_GLANCE[mood.id as MoodId]?.short ?? mood.label}
               active={checkIn.moods.includes(mood.id)}
               onClick={() => onMoodToggle(mood.id)}
             />
