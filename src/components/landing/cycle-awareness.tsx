@@ -5,25 +5,25 @@ const phases = [
     name: "Menstrual",
     days: "Days 1–5",
     tone: "Rest & restore",
-    color: "from-rose-200/80 to-accent-soft",
+    color: "from-[#f0e8e2] to-[#f5f2ec]",
   },
   {
     name: "Follicular",
     days: "Days 6–13",
     tone: "Rising clarity",
-    color: "from-[#e8f0ea] to-accent-soft",
+    color: "from-[#e5ede7] to-[#f5f2ec]",
   },
   {
     name: "Ovulation",
     days: "Days 14–16",
     tone: "Peak connection",
-    color: "from-[#f5efe8] to-accent-soft",
+    color: "from-[#ede8df] to-[#f5f2ec]",
   },
   {
     name: "Luteal",
     days: "Days 17–28",
     tone: "Gentle patience",
-    color: "from-[#ede8f2] to-accent-soft",
+    color: "from-[#eeebf4] to-[#f5f2ec]",
   },
 ];
 
@@ -45,19 +45,19 @@ export function CycleAwareness() {
           </p>
           <ul className="space-y-3 text-sm text-foreground">
             <li className="flex gap-3 rounded-2xl bg-card/80 px-4 py-3 ring-1 ring-border/60">
-              <span className="text-accent" aria-hidden>
+              <span className="text-primary" aria-hidden>
                 ✓
               </span>
               Phase calculated from your last period start
             </li>
             <li className="flex gap-3 rounded-2xl bg-card/80 px-4 py-3 ring-1 ring-border/60">
-              <span className="text-accent" aria-hidden>
+              <span className="text-primary" aria-hidden>
                 ✓
               </span>
               Plain-language context — no medical jargon
             </li>
             <li className="flex gap-3 rounded-2xl bg-card/80 px-4 py-3 ring-1 ring-border/60">
-              <span className="text-accent" aria-hidden>
+              <span className="text-primary" aria-hidden>
                 ✓
               </span>
               Designed for understanding, not diagnosis

@@ -5,10 +5,10 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Lovira",
     short_name: "Lovira",
     description:
-      "Couple wellness with cycle awareness, mood check-ins, and partner support.",
+      "Emotional wellness for couples — check-ins, insights, and gentle partner support.",
     start_url: "/",
     display: "standalone",
-    background_color: "#faf7f5",
-    theme_color: "#b85a75",
+    background_color: "#f7f4ef",
+    theme_color: "#4d6b5a",
   };
 }

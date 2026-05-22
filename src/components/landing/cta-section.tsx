@@ -11,12 +11,12 @@ export function CtaSection() {
               Ready for a softer way to connect?
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-muted sm:text-lg">
-              Open your dashboard, log your rhythm today, and see how Lovira
-              guides gentle partner support — in minutes, not months.
+              Both partners check in. Both get support. Start on your dashboard
+              — private, gentle, and judgment-free.
             </p>
             <Link
               href="/dashboard"
-              className="mt-10 inline-flex items-center justify-center rounded-full bg-accent px-10 py-4 text-sm font-medium text-white shadow-lg shadow-accent/30 transition-all hover:scale-[1.02] hover:shadow-xl"
+              className="mt-10 inline-flex items-center justify-center rounded-full bg-primary px-10 py-4 text-sm font-medium text-white shadow-lg shadow-primary/25 transition-all hover:scale-[1.02] hover:opacity-95"
             >
               Open Lovira dashboard
             </Link>

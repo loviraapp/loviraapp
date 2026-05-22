@@ -4,11 +4,12 @@ import type { CycleInfo } from "@/types/app";
 import { getPhaseMeta, PHASE_ORDER } from "@/lib/cycle";
 import type { CyclePhase } from "@/types/app";
 
+/** Neutral wellness tones — not pink / period-tracker coded */
 const PHASE_COLORS: Record<CyclePhase, string> = {
-  menstrual: "from-rose-200/90 to-accent-soft",
-  follicular: "from-emerald-100/80 to-accent-soft",
-  ovulation: "from-amber-100/80 to-accent-soft",
-  luteal: "from-violet-200/70 to-lavender-soft",
+  menstrual: "from-[#f0e8e2] to-[#f5f2ec]",
+  follicular: "from-[#e5ede7] to-[#f5f2ec]",
+  ovulation: "from-[#ede8df] to-[#f5f2ec]",
+  luteal: "from-[#eeebf4] to-[#f5f2ec]",
 };
 
 type CyclePhaseCardProps = {
@@ -20,7 +21,7 @@ export function CyclePhaseCard({ cycle, hasPeriodDate }: CyclePhaseCardProps) {
   if (!hasPeriodDate) {
     return (
       <p className="text-sm text-muted">
-        Add a cycle start date to see your current rhythm phase.
+        Add a cycle start date to see rhythm context — optional for any partner.
       </p>
     );
   }
@@ -37,7 +38,7 @@ export function CyclePhaseCard({ cycle, hasPeriodDate }: CyclePhaseCardProps) {
 
   return (
     <div
-      className={`rounded-2xl bg-gradient-to-br ${PHASE_COLORS[cycle.phase]} p-5 ring-1 ring-border/60`}
+      className={`rounded-2xl bg-gradient-to-br ${PHASE_COLORS[cycle.phase]} p-5 ring-1 ring-border/80`}
     >
       <div className="flex items-end justify-between gap-4">
         <div>
@@ -46,7 +47,7 @@ export function CyclePhaseCard({ cycle, hasPeriodDate }: CyclePhaseCardProps) {
             Day {cycle.dayInCycle} of {cycle.cycleLength}
           </p>
         </div>
-        <span className="rounded-full bg-card/80 px-3 py-1 text-xs font-medium text-muted ring-1 ring-border">
+        <span className="rounded-full bg-card/90 px-3 py-1 text-xs font-medium text-muted ring-1 ring-border">
           ~{cycle.daysUntilNextPeriod}d to next cycle start
         </span>
       </div>
@@ -60,7 +61,7 @@ export function CyclePhaseCard({ cycle, hasPeriodDate }: CyclePhaseCardProps) {
             <div
               key={phase}
               className={`h-1.5 flex-1 rounded-full transition-colors ${
-                active ? "bg-accent" : "bg-border"
+                active ? "bg-primary" : "bg-border"
               }`}
               title={getPhaseMeta(phase).label}
             />

@@ -36,7 +36,7 @@ export function PartnerSupport() {
             className="flex flex-col rounded-3xl border border-border/70 bg-card p-7 shadow-sm"
           >
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
+              <span className="rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-primary">
                 {item.phase}
               </span>
               <span className="rounded-full bg-background px-3 py-1 text-xs font-medium text-muted ring-1 ring-border">

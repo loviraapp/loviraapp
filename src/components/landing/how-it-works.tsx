@@ -18,8 +18,13 @@ const steps = [
   },
   {
     step: "04",
-    title: "Preview Partner Mode",
-    body: "See exactly what a partner would get: support insight and partner awareness — not private moods or notes.",
+    title: "Couple insight",
+    body: "Warm guidance for both of you — supportive, never a scorecard or blame.",
+  },
+  {
+    step: "05",
+    title: "Partner Mode preview",
+    body: "See support guidance only — not private moods, notes, or sensitive details.",
   },
 ];
 
@@ -37,7 +42,7 @@ export function HowItWorks() {
             key={item.step}
             className="group relative rounded-3xl border border-border/70 bg-card p-8 shadow-sm transition-shadow hover:shadow-md"
           >
-            <span className="font-display text-4xl font-medium text-accent/30 transition-colors group-hover:text-accent/50">
+            <span className="font-display text-4xl font-medium text-primary/25 transition-colors group-hover:text-primary/40">
               {item.step}
             </span>
             <h3 className="mt-4 text-xl font-medium text-foreground">

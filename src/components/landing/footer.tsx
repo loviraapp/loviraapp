@@ -17,7 +17,7 @@ export function LandingFooter() {
           <a href="#privacy" className="hover:text-foreground">
             Privacy
           </a>
-          <Link href="/dashboard" className="font-medium text-accent hover:opacity-80">
+          <Link href="/dashboard" className="font-medium text-primary hover:opacity-80">
             Dashboard
           </Link>
         </nav>

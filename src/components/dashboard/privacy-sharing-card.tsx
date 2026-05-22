@@ -1,15 +1,15 @@
 const PILLARS = [
   {
     title: "You control what is shared",
-    body: "Lovira is built so you decide what leaves your device when sharing arrives in a future version.",
+    body: "Your check-in stays on this device until you choose otherwise in a future version.",
   },
   {
     title: "Private notes stay private",
-    body: "Personal reflections and detailed check-ins are for you — not automatically visible to a partner.",
+    body: "Personal insight is never shown in Partner Mode — only gentle support guidance.",
   },
   {
     title: "Partners see support guidance",
-    body: "A partner would see gentle support insight — not sensitive details or a full mood breakdown.",
+    body: "Partner Mode shows awareness and optional support ideas — not sensitive mood details.",
   },
 ];
 
@@ -19,9 +19,9 @@ export function PrivacySharingCard() {
       {PILLARS.map((item) => (
         <div
           key={item.title}
-          className="flex gap-3 rounded-xl bg-background/80 px-4 py-3 ring-1 ring-border/60"
+          className="flex gap-3 rounded-xl bg-card px-4 py-3 ring-1 ring-border/60"
         >
-          <span className="text-accent" aria-hidden>
+          <span className="text-primary" aria-hidden>
             ◇
           </span>
           <div>

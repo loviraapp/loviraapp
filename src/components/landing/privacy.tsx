@@ -30,7 +30,7 @@ export function Privacy() {
             key={item.title}
             className="rounded-3xl border border-white/60 bg-card/90 p-8 shadow-sm backdrop-blur-sm"
           >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary-soft text-primary">
               <span className="text-lg" aria-hidden>
                 ◇
               </span>

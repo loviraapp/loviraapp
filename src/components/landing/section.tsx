@@ -21,7 +21,7 @@ export function Section({
 }: SectionProps) {
   const bg =
     variant === "muted"
-      ? "bg-accent-soft/40"
+      ? "bg-primary-soft/50"
       : variant === "gradient"
         ? "landing-section-gradient"
         : "";
@@ -31,7 +31,7 @@ export function Section({
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
           {eyebrow ? (
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               {eyebrow}
             </p>
           ) : null}

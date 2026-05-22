@@ -80,7 +80,7 @@ export default function RootLayout({
               </Link>
               <Link
                 href="/dashboard"
-                className="rounded-full bg-accent px-4 py-2 font-medium text-white shadow-sm shadow-accent/20 transition-all hover:opacity-90"
+                className="rounded-full bg-primary px-4 py-2 font-medium text-white shadow-sm shadow-primary/20 transition-all hover:opacity-90"
               >
                 Dashboard
               </Link>

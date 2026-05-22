@@ -20,8 +20,8 @@ export function MoodCheckIn({ selected, onToggle }: MoodCheckInProps) {
             onClick={() => onToggle(mood.id)}
             className={`flex flex-col items-center gap-2 rounded-2xl border px-3 py-4 text-center transition-all ${
               active
-                ? "border-accent bg-accent-soft shadow-md shadow-accent/10 ring-2 ring-accent/30"
-                : "border-border bg-background/60 hover:border-accent/40 hover:bg-card"
+                ? "border-primary bg-primary-soft shadow-sm ring-2 ring-primary/25"
+                : "border-border bg-card hover:border-primary/30"
             }`}
             aria-pressed={active}
           >
@@ -29,7 +29,7 @@ export function MoodCheckIn({ selected, onToggle }: MoodCheckInProps) {
               {mood.emoji}
             </span>
             <span
-              className={`text-sm font-medium ${active ? "text-accent" : "text-foreground"}`}
+              className={`text-sm font-medium ${active ? "text-primary" : "text-foreground"}`}
             >
               {mood.label}
             </span>

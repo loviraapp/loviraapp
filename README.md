@@ -1,4 +1,4 @@
-# Lovira v0.3
+# Lovira v0.4
 
 Emotional wellness for couples — local-first, no login, no database.
 
@@ -6,30 +6,19 @@ Emotional wellness for couples — local-first, no login, no database.
 
 - **Production:** https://lovira-chi.vercel.app
 - **Dashboard:** https://lovira-chi.vercel.app/dashboard
-- **GitHub:** https://github.com/loviraapp/loviraapp
 
-## v0.3 features
+## v0.4 highlights
 
-- Guided 4-step dashboard (rhythm → moods → insight → support)
-- Multi-mood selection (10 moods, multiple per day)
-- Partner Mode preview (support guidance only)
-- Privacy-first sharing copy + gentle awareness language
-- Balanced couple-focused positioning
-- localStorage with v0.2 data migration (single mood → array)
+- **Both partners check in** — mood, energy, optional support intention
+- **Couple Insight** — balanced, non-judgmental relationship guidance
+- **5-step guided dashboard** — rhythm (optional) → you → partner → insights → support
+- **Partner Mode preview** — support guidance only, no sensitive details
+- **New visual identity** — sage green, warm ivory, clay accents (not Flo-like pink)
 
 ## Develop
 
 ```bash
 npm install
 npm run dev
-# if dev cache errors:
-npm run dev:clean
-```
-
-## Deploy
-
-Push to `main` on GitHub — Vercel auto-deploys when Git integration is connected.
-
-```bash
-git push origin main
+npm run dev:clean   # if cache errors
 ```
