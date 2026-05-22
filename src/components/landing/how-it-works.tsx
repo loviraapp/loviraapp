@@ -3,18 +3,23 @@ import { Section } from "./section";
 const steps = [
   {
     step: "01",
-    title: "Log your rhythm",
-    body: "Add your last period start. Lovira estimates where you are in your cycle — no spreadsheets, no stress.",
+    title: "Add rhythm context",
+    body: "Either partner can log a cycle start date. Lovira estimates phase — shared awareness, not one-sided tracking.",
   },
   {
     step: "02",
-    title: "Check in with mood",
-    body: "A quick daily pulse — how you feel, in seconds. Patterns emerge over time, quietly on your device.",
+    title: "Check in with moods",
+    body: "Select every feeling that fits today. Couples often feel more than one thing — Lovira makes room for that.",
   },
   {
     step: "03",
-    title: "Share support, not pressure",
-    body: "Thoughtful suggestions help your partner show up with empathy — words and actions that match the day you're having.",
+    title: "See insight & support",
+    body: "A private reflection for you, then gentle partner support guidance — never loud alerts, never pressure.",
+  },
+  {
+    step: "04",
+    title: "Preview Partner Mode",
+    body: "See exactly what a partner would get: support insight and partner awareness — not private moods or notes.",
   },
 ];
 
@@ -23,10 +28,10 @@ export function HowItWorks() {
     <Section
       id="how-it-works"
       eyebrow="How it works"
-      title="Three gentle steps, every day"
-      description="Lovira is built for real couples — busy mornings, tender evenings, and everything in between."
+      title="A guided flow for both partners"
+      description="Four clear steps on the dashboard — so you always know what to do next."
     >
-      <ol className="grid gap-6 md:grid-cols-3">
+      <ol className="grid gap-6 sm:grid-cols-2">
         {steps.map((item) => (
           <li
             key={item.step}

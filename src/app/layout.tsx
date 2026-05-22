@@ -20,11 +20,11 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Lovira — Couple wellness",
+    default: "Lovira — Emotional wellness for couples",
     template: "%s · Lovira",
   },
   description:
-    "Understand each other better with cycle awareness, mood check-ins, and gentle partner support. Private, local-first wellness for couples.",
+    "Emotional wellness for couples — rhythm awareness, multi-mood check-ins, private insight, and gentle partner support. Local-first, no account required.",
   applicationName: "Lovira",
   keywords: [
     "couple wellness",
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "Lovira",
-    title: "Lovira — Couple wellness",
+    title: "Lovira — Emotional wellness for couples",
     description:
-      "Cycle awareness, daily mood check-ins, and gentle partner support — saved privately on your device.",
+      "Rhythm awareness, multi-mood check-ins, and gentle partner support — saved privately on your device.",
   },
   twitter: {
     card: "summary_large_image",

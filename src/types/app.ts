@@ -6,16 +6,23 @@ export type CyclePhase =
 
 export type MoodId =
   | "calm"
-  | "emotional"
-  | "sensitive"
   | "tired"
+  | "sensitive"
+  | "stressed"
+  | "overwhelmed"
+  | "irritated"
+  | "affectionate"
+  | "low_energy"
   | "hopeful"
-  | "stressed";
+  | "quiet";
 
 export type LoviraData = {
   lastPeriodStart: string | null;
   cycleLength: number;
-  moodLog: Record<string, MoodId>;
+  /** Date key → selected moods (v0.3: multiple per day) */
+  moodLog: Record<string, MoodId[]>;
+  /** Last completed guided-flow step (1–4) */
+  flowStep: number;
 };
 
 export type CycleInfo = {
@@ -29,4 +36,15 @@ export type SupportSuggestion = {
   title: string;
   message: string;
   action: string;
+};
+
+export type PersonalInsight = {
+  title: string;
+  message: string;
+};
+
+export type PartnerPreview = {
+  awarenessLine: string;
+  supportGuidance: string;
+  gentleNudge: string;
 };

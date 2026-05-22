@@ -4,29 +4,54 @@ const KEYS = {
   lastPeriodStart: "lovira:lastPeriodStart",
   cycleLength: "lovira:cycleLength",
   moodLog: "lovira:moodLog",
+  flowStep: "lovira:flowStep",
 } as const;
 
 const DEFAULT_CYCLE_LENGTH = 28;
 
+function migrateMoodLog(raw: unknown): Record<string, MoodId[]> {
+  if (!raw || typeof raw !== "object") return {};
+
+  const entries = Object.entries(raw as Record<string, unknown>);
+  const result: Record<string, MoodId[]> = {};
+
+  for (const [date, value] of entries) {
+    if (Array.isArray(value)) {
+      result[date] = value.filter((m): m is MoodId => typeof m === "string");
+    } else if (typeof value === "string") {
+      result[date] = [value as MoodId];
+    }
+  }
+
+  return result;
+}
+
 export function loadLoviraData(): LoviraData {
   if (typeof window === "undefined") {
-    return { lastPeriodStart: null, cycleLength: DEFAULT_CYCLE_LENGTH, moodLog: {} };
+    return {
+      lastPeriodStart: null,
+      cycleLength: DEFAULT_CYCLE_LENGTH,
+      moodLog: {},
+      flowStep: 1,
+    };
   }
 
   const lastPeriodStart = localStorage.getItem(KEYS.lastPeriodStart);
   const cycleRaw = localStorage.getItem(KEYS.cycleLength);
   const moodRaw = localStorage.getItem(KEYS.moodLog);
+  const flowRaw = localStorage.getItem(KEYS.flowStep);
 
-  let moodLog: Record<string, MoodId> = {};
+  let moodLog: Record<string, MoodId[]> = {};
   if (moodRaw) {
     try {
-      moodLog = JSON.parse(moodRaw) as Record<string, MoodId>;
+      moodLog = migrateMoodLog(JSON.parse(moodRaw));
     } catch {
       moodLog = {};
     }
   }
 
   const parsedCycle = cycleRaw ? Number(cycleRaw) : DEFAULT_CYCLE_LENGTH;
+  const flowStep = flowRaw ? Number(flowRaw) : 1;
 
   return {
     lastPeriodStart,
@@ -35,6 +60,10 @@ export function loadLoviraData(): LoviraData {
         ? parsedCycle
         : DEFAULT_CYCLE_LENGTH,
     moodLog,
+    flowStep:
+      Number.isFinite(flowStep) && flowStep >= 1 && flowStep <= 4
+        ? flowStep
+        : 1,
   };
 }
 
@@ -46,13 +75,16 @@ export function saveLastPeriodStart(date: string | null): void {
   }
 }
 
-export function saveMoodForDate(dateKey: string, mood: MoodId): void {
+export function saveMoodsForDate(dateKey: string, moods: MoodId[]): void {
   const data = loadLoviraData();
-  data.moodLog[dateKey] = mood;
+  data.moodLog[dateKey] = moods;
   localStorage.setItem(KEYS.moodLog, JSON.stringify(data.moodLog));
 }
 
-/** Step 4 — single place for all persisted keys */
+export function saveFlowStep(step: number): void {
+  localStorage.setItem(KEYS.flowStep, String(Math.min(4, Math.max(1, step))));
+}
+
 export const STORAGE_KEYS = KEYS;
 
 export function getTodayKey(): string {

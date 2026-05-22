@@ -31,17 +31,17 @@ export function CycleAwareness() {
   return (
     <Section
       id="cycle-awareness"
-      eyebrow="Cycle awareness"
-      title="Your body has a rhythm. Lovira helps you honor it."
-      description="Understanding phase — not predicting perfection — gives couples a shared language for energy, sensitivity, and care."
+      eyebrow="Rhythm awareness"
+      title="A shared language for energy and care"
+      description="Understanding phase — not predicting perfection — helps both partners respond with empathy, whether you track or support."
       variant="muted"
     >
       <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
         <div className="space-y-5">
           <p className="text-base leading-relaxed text-muted">
-            Hormonal shifts influence mood, sleep, and how much social energy
-            feels good. When partners see the phase — not just the symptom —
-            empathy replaces confusion.
+            Rhythm shifts influence mood, sleep, and capacity. When couples see
+            phase context — not just a bad day — patience and reassurance come
+            easier for everyone.
           </p>
           <ul className="space-y-3 text-sm text-foreground">
             <li className="flex gap-3 rounded-2xl bg-card/80 px-4 py-3 ring-1 ring-border/60">

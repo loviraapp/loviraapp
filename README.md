@@ -1,31 +1,35 @@
-# Lovira v0.2
+# Lovira v0.3
 
-Local-first couple wellness prototype (no login, no database, no API).
+Emotional wellness for couples — local-first, no login, no database.
 
-## Routes
+## Live
 
-- `/` — Landing page
-- `/dashboard` — v0.2 dashboard
+- **Production:** https://lovira-chi.vercel.app
+- **Dashboard:** https://lovira-chi.vercel.app/dashboard
+- **GitHub:** https://github.com/loviraapp/loviraapp
 
-## Dashboard (5 steps)
+## v0.3 features
 
-1. **Period start date** — `PeriodDateForm` → `lovira:lastPeriodStart`
-2. **Cycle day + phase** — `lib/cycle.ts` (Menstrual / Follicular / Ovulation / Luteal)
-3. **Mood check-in** — emoji buttons → `lovira:moodLog` (by date)
-4. **localStorage** — `lib/storage.ts` (automatic on change)
-5. **Partner support card** — `lib/support-tips.ts` (phase + mood)
+- Guided 4-step dashboard (rhythm → moods → insight → support)
+- Multi-mood selection (10 moods, multiple per day)
+- Partner Mode preview (support guidance only)
+- Privacy-first sharing copy + gentle awareness language
+- Balanced couple-focused positioning
+- localStorage with v0.2 data migration (single mood → array)
 
 ## Develop
 
 ```bash
 npm install
 npm run dev
+# if dev cache errors:
+npm run dev:clean
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## Deploy
 
-## Stack
+Push to `main` on GitHub — Vercel auto-deploys when Git integration is connected.
 
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS v4
+```bash
+git push origin main
+```

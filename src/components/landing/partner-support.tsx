@@ -3,21 +3,21 @@ import { Section } from "./section";
 const examples = [
   {
     phase: "Menstrual",
-    mood: "Tired",
+    context: "Low energy",
     suggestion:
-      "Bring a warm drink and handle one chore without being asked. Quiet presence beats big gestures.",
+      "Bring warmth and handle one small task without being asked. Quiet presence beats big gestures.",
   },
   {
     phase: "Follicular",
-    mood: "Hopeful",
+    context: "Hopeful",
     suggestion:
-      "Plan something light you both enjoy — a walk, a favorite meal. Match her rising energy, don't overwhelm it.",
+      "Plan something light you both enjoy. Match rising energy without over-scheduling the day.",
   },
   {
     phase: "Luteal",
-    mood: "Sensitive",
+    context: "Sensitive",
     suggestion:
-      'Listen more than you fix. Ask: "Do you want comfort, space, or help deciding?"',
+      "Listen more than you fix. Ask: comfort, space, or help deciding?",
   },
 ];
 
@@ -26,8 +26,8 @@ export function PartnerSupport() {
     <Section
       id="partner-support"
       eyebrow="Partner support"
-      title="Small words. Big difference."
-      description="Lovira suggests caring actions — never scripts — so partners can show up with confidence and respect."
+      title="Gentle support insight, not scripts"
+      description="Lovira suggests caring actions so any partner — including men supporting their person — can show up with confidence."
     >
       <div className="grid gap-6 md:grid-cols-3">
         {examples.map((item) => (
@@ -40,7 +40,7 @@ export function PartnerSupport() {
                 {item.phase}
               </span>
               <span className="rounded-full bg-background px-3 py-1 text-xs font-medium text-muted ring-1 ring-border">
-                Mood: {item.mood}
+                {item.context}
               </span>
             </div>
             <blockquote className="mt-6 flex-1 font-display text-lg leading-relaxed text-foreground">

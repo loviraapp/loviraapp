@@ -2,16 +2,16 @@ import { Section } from "./section";
 
 const pillars = [
   {
-    title: "On your device",
-    body: "v0.1 stores cycle and mood data in your browser — nothing leaves your phone or laptop unless you choose to later.",
+    title: "You control what is shared",
+    body: "v0.3 keeps data on your device. When sharing arrives later, you decide what a partner sees.",
   },
   {
-    title: "No account required",
-    body: "Open the dashboard and start. No email, no passwords, no waiting — just space to breathe and track.",
+    title: "Private notes stay private",
+    body: "Personal insight is for you. Partners see support guidance — not a full mood breakdown.",
   },
   {
-    title: "You stay in control",
-    body: "Future versions will let you choose exactly what a partner sees. Privacy isn't a feature — it's the foundation.",
+    title: "Gentle awareness only",
+    body: "No aggressive alerts — only soft partner awareness and support insight language.",
   },
 ];
 
@@ -21,7 +21,7 @@ export function Privacy() {
       id="privacy"
       eyebrow="Privacy first"
       title="Intimate data deserves intimate care"
-      description="Wellness apps ask for your inner life. Lovira is designed to earn that trust slowly, transparently, and on your terms."
+      description="Lovira earns trust with transparency: partner sees support guidance, not sensitive details."
       variant="gradient"
     >
       <div className="grid gap-6 md:grid-cols-3">

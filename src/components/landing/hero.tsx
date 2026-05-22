@@ -8,21 +8,21 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <p className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/70 px-4 py-1.5 text-xs font-medium tracking-wide text-muted backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-            Couple wellness, designed with care
+            Emotional wellness for couples
           </p>
 
           <h1 className="mt-8 font-display text-[2.5rem] font-medium leading-[1.1] tracking-tight text-foreground sm:text-6xl sm:leading-[1.08]">
             Feel understood.
             <br />
             <span className="bg-gradient-to-r from-accent to-[#9b6b8a] bg-clip-text text-transparent">
-              Love deeper.
+              Show up together.
             </span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-            Lovira helps couples navigate cycle rhythms, daily moods, and
-            gentle support — so small moments of care feel natural, not
-            guesswork.
+            Lovira helps both partners navigate rhythm, mood, and gentle
+            support — so care feels natural, not guesswork. Built for couples,
+            not one-sided tracking.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -49,19 +49,19 @@ export function Hero() {
           <div className="rounded-3xl border border-border/80 bg-card/90 p-6 shadow-xl shadow-accent/5 backdrop-blur-md sm:p-8">
             <div className="grid gap-4 sm:grid-cols-3">
               <PreviewCard
-                label="Today's phase"
+                label="Rhythm context"
                 value="Luteal"
-                hint="Day 22 · gentle energy"
+                hint="Shared awareness, not surveillance"
               />
               <PreviewCard
-                label="Mood check-in"
-                value="Calm"
-                hint="Logged this morning"
+                label="Today's moods"
+                value="Calm · Tired"
+                hint="Multiple feelings welcome"
               />
               <PreviewCard
-                label="For your partner"
-                value="Offer warmth"
-                hint="A small gesture goes far"
+                label="Partner insight"
+                value="Patience"
+                hint="Gentle support guidance"
                 highlight
               />
             </div>

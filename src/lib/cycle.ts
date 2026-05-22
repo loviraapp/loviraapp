@@ -8,25 +8,29 @@ const PHASE_WINDOWS: Record<
     start: 1,
     end: 5,
     label: "Menstrual",
-    summary: "Rest and comfort matter most. Energy may feel lower — honor that rhythm.",
+    summary:
+      "Rest and comfort matter most. Energy may feel lower — honor that rhythm together.",
   },
   follicular: {
     start: 6,
     end: 13,
     label: "Follicular",
-    summary: "Clarity and lightness often return. Good time for connection and new plans.",
+    summary:
+      "Clarity and lightness often return. A good window for connection and new plans.",
   },
   ovulation: {
     start: 14,
     end: 16,
     label: "Ovulation",
-    summary: "Peak vitality and openness. Communication and intimacy may feel easier.",
+    summary:
+      "Peak vitality and openness. Communication and closeness may feel easier.",
   },
   luteal: {
     start: 17,
     end: 28,
     label: "Luteal",
-    summary: "Sensitivity can rise. Patience, reassurance, and calm routines help most.",
+    summary:
+      "Sensitivity can rise. Patience, reassurance, and calm routines help both partners.",
   },
 };
 
