@@ -27,7 +27,9 @@ import { SupportSuggestionCard } from "./support-suggestion-card";
 import { FlowProgress } from "./flow-progress";
 import { FlowStepShell } from "./flow-step-shell";
 import { PersonalInsightCard } from "./personal-insight-card";
-import { CoupleInsightCard } from "./couple-insight-card";
+import { CoupleInsightVisual } from "./couple-insight-visual";
+import { getDashboardCopy } from "@/lib/copy-by-role";
+import { useUserRole } from "@/hooks/use-user-role";
 import { PartnerCheckInSection } from "./partner-check-in-section";
 import { PartnerModePreview } from "./partner-mode-preview";
 import { PrivacySharingCard } from "./privacy-sharing-card";
@@ -45,6 +47,8 @@ function computeMaxStep(
 }
 
 export function DashboardView() {
+  const { role, ready: roleReady } = useUserRole();
+  const copy = getDashboardCopy(role ?? "tracking");
   const [hydrated, setHydrated] = useState(false);
   const [lastPeriodStart, setLastPeriodStart] = useState("");
   const [cycleLength, setCycleLength] = useState(28);
@@ -173,7 +177,7 @@ export function DashboardView() {
   const hasPrimaryMoods = todayMoods.length > 0;
   const partnerStarted = isPartnerCheckInStarted(partnerCheckIn);
 
-  if (!hydrated) {
+  if (!hydrated || !roleReady) {
     return (
       <div className="dashboard-shell mx-auto max-w-2xl px-4 py-10 sm:px-6">
         <div className="animate-pulse space-y-4">
@@ -188,15 +192,18 @@ export function DashboardView() {
     <div className="dashboard-shell mx-auto max-w-2xl px-4 py-8 pb-16 sm:px-6 sm:py-10">
       <header className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-          Emotional wellness for couples
+          {copy.tagline}
         </p>
         <h1 className="mt-2 font-display text-3xl text-foreground">Dashboard</h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          Both partners can check in. Both deserve support — saved privately on
-          this device.
-        </p>
-        <div className="mt-4">
+        <p className="mt-2 text-sm text-muted">{copy.subtitle}</p>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <BalancedPositioning />
+          <Link
+            href="/onboarding"
+            className="text-xs text-primary transition-opacity hover:opacity-80"
+          >
+            Switch role
+          </Link>
         </div>
       </header>
 
@@ -209,9 +216,9 @@ export function DashboardView() {
       <div className="space-y-5">
         <FlowStepShell
           step={1}
-          label="Rhythm context"
-          title="Optional rhythm context"
-          description="One lens for the relationship — not the whole story. Skip anytime."
+          label={copy.step1Title}
+          title={copy.step1Title}
+          description={copy.step1Hint}
           isActive={currentStep === 1}
           isComplete={maxReached > 1}
           footer={
@@ -234,8 +241,8 @@ export function DashboardView() {
         <FlowStepShell
           step={2}
           label="Your check-in"
-          title="How are you feeling?"
-          description="Your moods — private in Partner Mode. Select all that apply."
+          title={copy.step2Title}
+          description={copy.step2Hint}
           isActive={currentStep === 2}
           isComplete={maxReached > 2}
           footer={
@@ -246,7 +253,7 @@ export function DashboardView() {
                 label={
                   hasPrimaryMoods
                     ? "Continue to partner check-in"
-                    : "Select at least one mood"
+                    : copy.emptyMood
                 }
               />
             ) : null
@@ -254,17 +261,15 @@ export function DashboardView() {
         >
           <MoodCheckIn selected={todayMoods} onToggle={handleMoodToggle} />
           {hasPrimaryMoods ? (
-            <p className="mt-3 text-xs text-muted">
-              You: {formatMoodList(todayMoods)}
-            </p>
+            <p className="mt-3 text-xs text-muted">{formatMoodList(todayMoods)}</p>
           ) : null}
         </FlowStepShell>
 
         <FlowStepShell
           step={3}
           label="Partner check-in"
-          title="Your partner check-in"
-          description="How are you showing up today? Mood, energy, and optional support intention."
+          title={copy.step3Title}
+          description={copy.step3Hint}
           isActive={currentStep === 3}
           isComplete={maxReached > 3}
           footer={
@@ -272,11 +277,7 @@ export function DashboardView() {
               <ContinueButton
                 onClick={advanceStep}
                 disabled={!partnerStarted}
-                label={
-                  partnerStarted
-                    ? "View insights"
-                    : "Add mood, energy, or support intention"
-                }
+                label={partnerStarted ? "View insights" : copy.emptyPartner}
               />
             ) : null
           }
@@ -290,13 +291,12 @@ export function DashboardView() {
             onIntentionChange={(supportIntention) =>
               persistPartner({ ...partnerCheckIn, supportIntention })
             }
+            compactLabel={role === "support"}
           />
           {partnerStarted ? (
             <p className="mt-3 text-xs text-muted">
-              Partner: {formatPartnerMoodList(partnerCheckIn.moods)}
-              {partnerCheckIn.energy
-                ? ` · Energy: ${partnerCheckIn.energy}`
-                : ""}
+              {formatPartnerMoodList(partnerCheckIn.moods)}
+              {partnerCheckIn.energy ? ` · ${partnerCheckIn.energy}` : ""}
             </p>
           ) : null}
         </FlowStepShell>
@@ -304,8 +304,8 @@ export function DashboardView() {
         <FlowStepShell
           step={4}
           label="Insights"
-          title="Reflection for both of you"
-          description="Personal insight stays private. Couple insight is warm guidance — never blame."
+          title={copy.step4Title}
+          description={copy.step4Hint}
           isActive={currentStep === 4}
           isComplete={maxReached > 4}
           footer={
@@ -319,15 +319,19 @@ export function DashboardView() {
         >
           <div className="space-y-4">
             <PersonalInsightCard insight={personalInsight} />
-            <CoupleInsightCard insight={coupleInsight} />
+            <CoupleInsightVisual
+              insight={coupleInsight}
+              yourMoods={todayMoods}
+              partnerMoods={partnerCheckIn.moods}
+            />
           </div>
         </FlowStepShell>
 
         <FlowStepShell
           step={5}
           label="Support"
-          title="Gentle support guidance"
-          description="Optional ideas for showing up — never obligations. Preview what a partner would see."
+          title={copy.step5Title}
+          description={copy.step5Hint}
           isActive={currentStep === 5}
           isComplete={maxReached >= 5}
         >

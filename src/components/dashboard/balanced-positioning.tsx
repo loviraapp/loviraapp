@@ -1,18 +1,19 @@
-export function BalancedPositioning() {
-  const lines = [
-    "Lovira is for both partners.",
-    "Cycle awareness is one context, not the whole relationship.",
-    "Both people can check in. Both people deserve support.",
-  ];
+const BULLETS = [
+  { icon: "🤝", text: "Both partners check in" },
+  { icon: "🌿", text: "Rhythm is one lens" },
+  { icon: "🔒", text: "Private on this device" },
+];
 
+export function BalancedPositioning() {
   return (
-    <ul className="space-y-2 rounded-2xl border border-border bg-primary-soft/50 px-4 py-3">
-      {lines.map((line) => (
-        <li key={line} className="flex gap-2 text-sm text-foreground/90">
-          <span className="text-primary" aria-hidden>
-            ·
-          </span>
-          {line}
+    <ul className="flex flex-wrap gap-2">
+      {BULLETS.map(({ icon, text }) => (
+        <li
+          key={text}
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground/90"
+        >
+          <span aria-hidden>{icon}</span>
+          {text}
         </li>
       ))}
     </ul>

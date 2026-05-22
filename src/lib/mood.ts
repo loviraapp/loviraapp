@@ -9,9 +9,9 @@ export type MoodOption = {
 export const MOODS: MoodOption[] = [
   { id: "calm", label: "Calm", emoji: "😌" },
   { id: "tired", label: "Tired", emoji: "😴" },
-  { id: "sensitive", label: "Sensitive", emoji: "🫠" },
-  { id: "stressed", label: "Stressed", emoji: "😮‍💨" },
-  { id: "overwhelmed", label: "Overwhelmed", emoji: "🌊" },
+  { id: "sensitive", label: "Sensitive", emoji: "🫶" },
+  { id: "stressed", label: "Stressed", emoji: "😵" },
+  { id: "overwhelmed", label: "Overwhelmed", emoji: "🌧️" },
   { id: "irritated", label: "Irritated", emoji: "😤" },
   { id: "affectionate", label: "Affectionate", emoji: "🤍" },
   { id: "low_energy", label: "Low energy", emoji: "🔋" },

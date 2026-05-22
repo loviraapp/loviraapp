@@ -2,6 +2,8 @@
 
 import type { PartnerCheckIn, PartnerMoodId } from "@/types/app";
 import { PARTNER_MOODS } from "@/lib/partner-mood";
+import { MOOD_EMOJI_OVERRIDES } from "@/lib/visual-copy";
+import { EmotionChip } from "@/components/ui/emotion-chip";
 import { EnergySelector } from "./energy-selector";
 import { SupportIntentionPicker } from "./support-intention-picker";
 
@@ -10,6 +12,7 @@ type PartnerCheckInSectionProps = {
   onMoodToggle: (mood: PartnerMoodId) => void;
   onEnergyChange: (energy: PartnerCheckIn["energy"]) => void;
   onIntentionChange: (intention: PartnerCheckIn["supportIntention"]) => void;
+  compactLabel?: boolean;
 };
 
 export function PartnerCheckInSection({
@@ -17,41 +20,24 @@ export function PartnerCheckInSection({
   onMoodToggle,
   onEnergyChange,
   onIntentionChange,
+  compactLabel,
 }: PartnerCheckInSectionProps) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-medium text-foreground">How are you feeling?</p>
-        <p className="mt-1 text-xs text-muted">
-          For any partner — including men supporting their person. Select all that
-          fit.
-        </p>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {PARTNER_MOODS.map((mood) => {
-            const active = checkIn.moods.includes(mood.id);
-            return (
-              <button
-                key={mood.id}
-                type="button"
-                onClick={() => onMoodToggle(mood.id)}
-                className={`flex flex-col items-center gap-2 rounded-2xl border px-2 py-3 text-center transition-all ${
-                  active
-                    ? "border-primary bg-primary-soft shadow-sm ring-2 ring-primary/25"
-                    : "border-border bg-card hover:border-primary/30"
-                }`}
-                aria-pressed={active}
-              >
-                <span className="text-xl" role="img" aria-label={mood.label}>
-                  {mood.emoji}
-                </span>
-                <span
-                  className={`text-xs font-medium ${active ? "text-primary" : "text-foreground"}`}
-                >
-                  {mood.label}
-                </span>
-              </button>
-            );
-          })}
+        {!compactLabel ? (
+          <p className="text-sm font-medium text-foreground">Mood</p>
+        ) : null}
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {PARTNER_MOODS.map((mood) => (
+            <EmotionChip
+              key={mood.id}
+              emoji={MOOD_EMOJI_OVERRIDES[mood.id] ?? mood.emoji}
+              label={mood.label}
+              active={checkIn.moods.includes(mood.id)}
+              onClick={() => onMoodToggle(mood.id)}
+            />
+          ))}
         </div>
       </div>
 

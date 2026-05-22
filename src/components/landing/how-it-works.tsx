@@ -1,31 +1,11 @@
 import { Section } from "./section";
 
 const steps = [
-  {
-    step: "01",
-    title: "Add rhythm context",
-    body: "Either partner can log a cycle start date. Lovira estimates phase — shared awareness, not one-sided tracking.",
-  },
-  {
-    step: "02",
-    title: "Check in with moods",
-    body: "Select every feeling that fits today. Couples often feel more than one thing — Lovira makes room for that.",
-  },
-  {
-    step: "03",
-    title: "See insight & support",
-    body: "A private reflection for you, then gentle partner support guidance — never loud alerts, never pressure.",
-  },
-  {
-    step: "04",
-    title: "Couple insight",
-    body: "Warm guidance for both of you — supportive, never a scorecard or blame.",
-  },
-  {
-    step: "05",
-    title: "Partner Mode preview",
-    body: "See support guidance only — not private moods, notes, or sensitive details.",
-  },
+  { step: "01", emoji: "👋", title: "Choose your role", body: "Tracking rhythm or showing up in support." },
+  { step: "02", emoji: "🌙", title: "Rhythm (optional)", body: "One shared lens — skip anytime." },
+  { step: "03", emoji: "🫶", title: "Both check in", body: "Emoji-first moods for each partner." },
+  { step: "04", emoji: "💡", title: "Couple insight", body: "One warm line — never a scorecard." },
+  { step: "05", emoji: "🤝", title: "Gentle support", body: "Optional ideas, private preview." },
 ];
 
 export function HowItWorks() {
@@ -33,24 +13,21 @@ export function HowItWorks() {
     <Section
       id="how-it-works"
       eyebrow="How it works"
-      title="A guided flow for both partners"
-      description="Four clear steps on the dashboard — so you always know what to do next."
+      title="Five quick steps"
+      description="Onboarding, then a glanceable dashboard flow."
     >
-      <ol className="grid gap-6 sm:grid-cols-2">
+      <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {steps.map((item) => (
           <li
             key={item.step}
-            className="group relative rounded-3xl border border-border/70 bg-card p-8 shadow-sm transition-shadow hover:shadow-md"
+            className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
           >
-            <span className="font-display text-4xl font-medium text-primary/25 transition-colors group-hover:text-primary/40">
-              {item.step}
+            <span className="text-2xl" aria-hidden>
+              {item.emoji}
             </span>
-            <h3 className="mt-4 text-xl font-medium text-foreground">
-              {item.title}
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {item.body}
-            </p>
+            <p className="mt-3 text-xs font-medium text-primary">{item.step}</p>
+            <h3 className="mt-1 text-lg font-medium text-foreground">{item.title}</h3>
+            <p className="mt-2 text-sm text-muted">{item.body}</p>
           </li>
         ))}
       </ol>

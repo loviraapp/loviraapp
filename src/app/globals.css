@@ -116,6 +116,10 @@ body {
   box-shadow:
     0 1px 2px rgb(42 48 46 / 0.04),
     0 8px 24px -8px rgb(77 107 90 / 0.08);
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .support-card {

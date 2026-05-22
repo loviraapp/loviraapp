@@ -8,9 +8,9 @@ export type PartnerMoodOption = {
 
 export const PARTNER_MOODS: PartnerMoodOption[] = [
   { id: "calm", label: "Calm", emoji: "😌" },
-  { id: "stressed", label: "Stressed", emoji: "😮‍💨" },
+  { id: "stressed", label: "Stressed", emoji: "😵" },
   { id: "tired", label: "Tired", emoji: "😴" },
-  { id: "overwhelmed", label: "Overwhelmed", emoji: "🌊" },
+  { id: "overwhelmed", label: "Overwhelmed", emoji: "🌧️" },
   { id: "hopeful", label: "Hopeful", emoji: "✨" },
   { id: "quiet", label: "Quiet", emoji: "🤫" },
   { id: "irritated", label: "Irritated", emoji: "😤" },
