@@ -1,27 +1,20 @@
-import type { PartnerMoodId } from "@/types/app";
+import type { MoodId } from "@/types/app";
+import { MOODS } from "@/lib/mood";
 
 export type PartnerMoodOption = {
-  id: PartnerMoodId;
+  id: MoodId;
   label: string;
   emoji: string;
 };
 
-export const PARTNER_MOODS: PartnerMoodOption[] = [
-  { id: "calm", label: "Calm", emoji: "😌" },
-  { id: "stressed", label: "Stressed", emoji: "😵" },
-  { id: "tired", label: "Tired", emoji: "😴" },
-  { id: "overwhelmed", label: "Overwhelmed", emoji: "🌧️" },
-  { id: "hopeful", label: "Hopeful", emoji: "✨" },
-  { id: "quiet", label: "Quiet", emoji: "🤫" },
-  { id: "irritated", label: "Irritated", emoji: "😤" },
-  { id: "affectionate", label: "Affectionate", emoji: "🤍" },
-];
+/** Same moods for both partners — balanced experience */
+export const PARTNER_MOODS: PartnerMoodOption[] = MOODS;
 
-export function getPartnerMoodById(id: PartnerMoodId): PartnerMoodOption {
+export function getPartnerMoodById(id: MoodId): PartnerMoodOption {
   return PARTNER_MOODS.find((m) => m.id === id) ?? PARTNER_MOODS[0];
 }
 
-export function formatPartnerMoodList(moods: PartnerMoodId[]): string {
+export function formatPartnerMoodList(moods: MoodId[]): string {
   if (moods.length === 0) return "None yet";
   return moods.map((id) => getPartnerMoodById(id).label).join(", ");
 }

@@ -4,7 +4,6 @@ export type CyclePhase =
   | "ovulation"
   | "luteal";
 
-/** Primary check-in moods (full set) */
 export type MoodId =
   | "calm"
   | "tired"
@@ -17,16 +16,18 @@ export type MoodId =
   | "hopeful"
   | "quiet";
 
-/** Partner check-in moods (subset) */
-export type PartnerMoodId =
-  | "calm"
-  | "stressed"
-  | "tired"
-  | "overwhelmed"
-  | "hopeful"
-  | "quiet"
-  | "irritated"
-  | "affectionate";
+/** @deprecated use MoodId for partner too */
+export type PartnerMoodId = MoodId;
+
+export type NeedId =
+  | "space"
+  | "reassurance"
+  | "tasks"
+  | "calm_conversation"
+  | "affection"
+  | "rest"
+  | "playfulness"
+  | "appreciation";
 
 export type EnergyLevel = "low" | "medium" | "high";
 
@@ -37,18 +38,32 @@ export type SupportIntention =
   | "calm_time"
   | "kind_message";
 
-export type PartnerCheckIn = {
-  moods: PartnerMoodId[];
+export type PersonCheckIn = {
+  moods: MoodId[];
+  needs: NeedId[];
+};
+
+export type PartnerCheckIn = PersonCheckIn & {
   energy: EnergyLevel | null;
   supportIntention: SupportIntention | null;
+};
+
+export type RelationshipVibe = {
+  title: string;
+  line: string;
+  emoji: string;
 };
 
 export type LoviraData = {
   lastPeriodStart: string | null;
   cycleLength: number;
   moodLog: Record<string, MoodId[]>;
+  needLog: Record<string, NeedId[]>;
   partnerCheckInLog: Record<string, PartnerCheckIn>;
+  partnerNeedLog: Record<string, NeedId[]>;
   flowStep: number;
+  ritualStep: number;
+  completedDates: string[];
 };
 
 export type CycleInfo = {

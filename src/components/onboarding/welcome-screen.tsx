@@ -18,14 +18,13 @@ export function WelcomeScreen() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-12 sm:py-16">
-      <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary">
-        Lovira
-      </p>
+      <p className="text-xs font-medium text-primary">Lovira</p>
       <h1 className="mt-3 font-display text-3xl text-foreground">
-        Understand each other.
+        Your daily ritual together.
       </h1>
       <p className="mt-2 text-sm text-muted">
-        Each partner checks in on their own — pick your role on this device.
+        Both partners check in — moods, needs, one shared vibe. Not a period
+        tracker.
       </p>
 
       <div className="mt-8 space-y-3">
@@ -33,7 +32,7 @@ export function WelcomeScreen() {
           role="tracking"
           emoji="🌿"
           title="Track my rhythm"
-          subtitle="Moods · insights · optional context."
+          subtitle="Moods · needs · shared insight."
           selected={selected === "tracking"}
           onSelect={() => setSelected("tracking")}
         />
@@ -41,7 +40,7 @@ export function WelcomeScreen() {
           role="support"
           emoji="🤝"
           title="Support my partner"
-          subtitle="Show up · energy · gentle intentions."
+          subtitle="Show up · same ritual · both seen."
           selected={selected === "support"}
           onSelect={() => setSelected("support")}
         />
@@ -51,9 +50,9 @@ export function WelcomeScreen() {
         type="button"
         onClick={handleContinue}
         disabled={!selected}
-        className="mt-8 w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-opacity disabled:opacity-40"
+        className="mt-8 w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary/25 disabled:opacity-40"
       >
-        Continue
+        Begin today&apos;s ritual
       </button>
     </div>
   );

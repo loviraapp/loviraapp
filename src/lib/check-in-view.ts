@@ -24,5 +24,9 @@ export function hasTheirCheckIn(
   partnerCheckIn: PartnerCheckIn
 ): boolean {
   const theirs = getTheirMoods(role, todayMoods, partnerCheckIn);
-  return theirs.length > 0 || partnerCheckIn.energy !== null;
+  return (
+    theirs.length > 0 ||
+    partnerCheckIn.needs.length > 0 ||
+    partnerCheckIn.energy !== null
+  );
 }

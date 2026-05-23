@@ -42,6 +42,7 @@ export function getCoupleInsight(
   const oneNeedsSpace =
     partnerMoods.includes("irritated") ||
     primaryMoods.includes("irritated") ||
+    partnerCheckIn.needs.includes("space") ||
     partnerCheckIn.supportIntention === "space";
 
   if (bothLowEnergy || bothHeavy) {
@@ -65,7 +66,7 @@ export function getCoupleInsight(
     };
   }
 
-  if (partnerCheckIn.supportIntention && primary) {
+  if ((partnerCheckIn.needs.length > 0 || partnerCheckIn.supportIntention) && primary) {
     return {
       title: "Couple insight",
       message: "You are both showing up — meet each other where you are.",
