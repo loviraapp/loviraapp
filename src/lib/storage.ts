@@ -25,6 +25,17 @@ const EMPTY_PARTNER: PartnerCheckIn = {
   supportIntention: null,
 };
 
+export function normalizePartnerCheckIn(
+  raw?: Partial<PartnerCheckIn> | null
+): PartnerCheckIn {
+  return {
+    moods: Array.isArray(raw?.moods) ? raw.moods : [],
+    needs: Array.isArray(raw?.needs) ? raw.needs : [],
+    energy: raw?.energy ?? null,
+    supportIntention: raw?.supportIntention ?? null,
+  };
+}
+
 function migrateMoodLog(raw: unknown): Record<string, MoodId[]> {
   if (!raw || typeof raw !== "object") return {};
   const result: Record<string, MoodId[]> = {};
@@ -138,12 +149,14 @@ export function loadLoviraData(): LoviraData {
   }
 
   for (const [date, checkIn] of Object.entries(partnerCheckInLog)) {
-    if (checkIn.needs.length === 0) {
-      const fromIntention = intentionToNeed(checkIn.supportIntention);
-      if (fromIntention) checkIn.needs = [fromIntention];
+    partnerCheckInLog[date] = normalizePartnerCheckIn(checkIn);
+    const normalized = partnerCheckInLog[date];
+    if (normalized.needs.length === 0) {
+      const fromIntention = intentionToNeed(normalized.supportIntention);
+      if (fromIntention) normalized.needs = [fromIntention];
     }
     if (partnerNeedLog[date]?.length) {
-      checkIn.needs = partnerNeedLog[date];
+      normalized.needs = partnerNeedLog[date];
     }
   }
 
@@ -215,7 +228,7 @@ export function savePartnerCheckIn(dateKey: string, checkIn: PartnerCheckIn): vo
 
 export function getPartnerCheckIn(dateKey: string): PartnerCheckIn {
   const raw = loadLoviraData().partnerCheckInLog[dateKey];
-  return raw ? { ...EMPTY_PARTNER, ...raw } : { ...EMPTY_PARTNER };
+  return normalizePartnerCheckIn(raw ?? EMPTY_PARTNER);
 }
 
 export function saveFlowStep(step: number): void {

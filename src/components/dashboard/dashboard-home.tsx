@@ -8,6 +8,7 @@ import {
   getPartnerCheckIn,
   getNeedsForDate,
   loadLoviraData,
+  normalizePartnerCheckIn,
   saveLastPeriodStart,
   saveMoodsForDate,
   saveNeedsForDate,
@@ -57,7 +58,7 @@ export function DashboardHome() {
     setLastPeriodStart(data.lastPeriodStart ?? "");
     setTodayMoods(data.moodLog[todayKey] ?? []);
     setTodayNeeds(getNeedsForDate(todayKey));
-    setPartnerCheckIn(getPartnerCheckIn(todayKey));
+    setPartnerCheckIn(normalizePartnerCheckIn(getPartnerCheckIn(todayKey)));
     const savedStep = getRitualStep();
     const meComplete =
       (data.moodLog[todayKey]?.length ?? 0) > 0 &&
