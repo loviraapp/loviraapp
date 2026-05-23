@@ -74,6 +74,21 @@ export function getRelationshipVibe(
     };
   }
 
+  if (partner.moods.length === 0 && me.moods.length > 0) {
+    if (hasHeavy(me.moods) || wantsSpace(me.needs)) {
+      return {
+        emoji: "🌙",
+        title: "A softer evening may help",
+        line: "Honor what you need tonight — your check-in counts.",
+      };
+    }
+    return {
+      emoji: "🌿",
+      title: "Your vibe for tonight",
+      line: "When your partner checks in, your shared insight will deepen.",
+    };
+  }
+
   return {
     emoji: "🌙",
     title: "Gentle reconnection",

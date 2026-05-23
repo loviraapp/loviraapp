@@ -1,5 +1,9 @@
 import type { LoviraData, MoodId, NeedId, PartnerCheckIn } from "@/types/app";
-import { markDayComplete, isRitualComplete } from "@/lib/streak";
+import {
+  markDayComplete,
+  isRitualComplete,
+  isMyCheckInComplete,
+} from "@/lib/streak";
 
 const KEYS = {
   lastPeriodStart: "lovira:lastPeriodStart",
@@ -233,6 +237,9 @@ function maybeMarkComplete(dateKey: string): void {
   const me = data.moodLog[dateKey] ?? [];
   const meNeeds = data.needLog[dateKey] ?? [];
   const partner = data.partnerCheckInLog[dateKey];
+  if (isMyCheckInComplete(me, meNeeds)) {
+    markDayComplete(dateKey);
+  }
   if (
     isRitualComplete(
       me,

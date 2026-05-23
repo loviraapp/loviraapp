@@ -49,13 +49,22 @@ function formatDateKey(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
+export function isMyCheckInComplete(
+  meMoods: unknown[],
+  meNeeds: unknown[]
+): boolean {
+  return meMoods.length > 0 && meNeeds.length > 0;
+}
+
 export function isRitualComplete(
   meMoods: unknown[],
   meNeeds: unknown[],
   partnerMoods: unknown[],
   partnerNeeds: unknown[]
 ): boolean {
-  const meDone = meMoods.length > 0 && meNeeds.length > 0;
-  const partnerDone = partnerMoods.length > 0 && partnerNeeds.length > 0;
-  return meDone && partnerDone;
+  return (
+    isMyCheckInComplete(meMoods, meNeeds) &&
+    partnerMoods.length > 0 &&
+    partnerNeeds.length > 0
+  );
 }

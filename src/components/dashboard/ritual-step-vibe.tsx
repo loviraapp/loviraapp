@@ -11,6 +11,8 @@ type RitualStepVibeProps = {
   partnerMoods: MoodId[];
   meNeeds: NeedId[];
   partnerNeeds: NeedId[];
+  partnerPending?: boolean;
+  onAddPartnerCheckIn?: () => void;
 };
 
 export function RitualStepVibe({
@@ -19,6 +21,8 @@ export function RitualStepVibe({
   partnerMoods,
   meNeeds,
   partnerNeeds,
+  partnerPending,
+  onAddPartnerCheckIn,
 }: RitualStepVibeProps) {
   return (
     <div>
@@ -39,8 +43,22 @@ export function RitualStepVibe({
       </div>
       <div className="mt-6 flex gap-3">
         <PersonSummary label="You" moods={meMoods} needs={meNeeds} />
-        <PersonSummary label="Partner" moods={partnerMoods} needs={partnerNeeds} />
+        <PersonSummary
+          label="Partner"
+          moods={partnerMoods}
+          needs={partnerNeeds}
+          pending={partnerPending}
+        />
       </div>
+      {partnerPending && onAddPartnerCheckIn ? (
+        <button
+          type="button"
+          onClick={onAddPartnerCheckIn}
+          className="mt-6 w-full text-center text-sm text-primary"
+        >
+          Add partner check-in when they&apos;re ready →
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -49,10 +67,12 @@ function PersonSummary({
   label,
   moods,
   needs,
+  pending,
 }: {
   label: string;
   moods: MoodId[];
   needs: NeedId[];
+  pending?: boolean;
 }) {
   const mood = moods[0] ? getMoodGlance(moods[0]) : null;
   const need = needs[0] ? getNeedById(needs[0]) : null;
@@ -61,7 +81,11 @@ function PersonSummary({
     <div className="flex-1 rounded-2xl bg-card/70 px-3 py-3 text-center">
       <p className="text-xs text-muted">{label}</p>
       <p className="mt-1 text-sm font-medium">
-        {mood ? `${mood.emoji} ${mood.short}` : "—"}
+        {mood
+          ? `${mood.emoji} ${mood.short}`
+          : pending
+            ? "Not yet"
+            : "—"}
       </p>
       {need ? (
         <p className="mt-1 text-xs text-muted">{need.emoji} {need.label}</p>

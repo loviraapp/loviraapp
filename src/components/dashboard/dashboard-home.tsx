@@ -58,7 +58,11 @@ export function DashboardHome() {
     setTodayMoods(data.moodLog[todayKey] ?? []);
     setTodayNeeds(getNeedsForDate(todayKey));
     setPartnerCheckIn(getPartnerCheckIn(todayKey));
-    setRitualStep(getRitualStep());
+    const savedStep = getRitualStep();
+    const meComplete =
+      (data.moodLog[todayKey]?.length ?? 0) > 0 &&
+      (data.needLog[todayKey]?.length ?? 0) > 0;
+    setRitualStep(meComplete && savedStep < 3 ? 3 : savedStep);
     setHydrated(true);
   }, [todayKey]);
 
@@ -78,7 +82,7 @@ export function DashboardHome() {
   const meDone = todayMoods.length > 0 && todayNeeds.length > 0;
   const partnerDone =
     partnerCheckIn.moods.length > 0 && partnerCheckIn.needs.length > 0;
-  const bothDone = meDone && partnerDone;
+  const partnerPending = !partnerDone;
 
   const vibe = useMemo(
     () =>
@@ -140,6 +144,11 @@ export function DashboardHome() {
     saveRitualStep(step);
   }, []);
 
+  const startPartnerCheckIn = useCallback(() => {
+    setActivePerson("partner");
+    goToStep(1);
+  }, [goToStep]);
+
   const canContinue =
     ritualStep === 1
       ? activeMoods.length > 0
@@ -153,25 +162,20 @@ export function DashboardHome() {
       return;
     }
     if (ritualStep === 2 && activeNeeds.length > 0) {
-      if (!meDone && activePerson === "partner") {
-        setActivePerson("me");
-        goToStep(1);
-        return;
-      }
-      if (!partnerDone && activePerson === "me") {
-        setActivePerson("partner");
-        goToStep(1);
-        return;
-      }
-      if (bothDone) goToStep(3);
-      else if (meDone) {
-        setActivePerson("partner");
-        goToStep(1);
-      } else {
-        setActivePerson("me");
-        goToStep(1);
+      if (
+        (activePerson === "me" && meDone) ||
+        (activePerson === "partner" && partnerDone)
+      ) {
+        goToStep(3);
       }
     }
+  }
+
+  function continueButtonLabel(): string {
+    if (ritualStep === 1) return "Continue";
+    if (activePerson === "me" && meDone) return "See tonight's vibe";
+    if (activePerson === "partner" && partnerDone) return "See tonight's vibe";
+    return "Continue";
   }
 
   if (!hydrated) {
@@ -184,6 +188,8 @@ export function DashboardHome() {
       </div>
     );
   }
+
+  const showPartnerToggle = ritualStep < 3 && activePerson === "partner";
 
   return (
     <div className="dashboard-shell mx-auto max-w-md px-5 pb-28 pt-8">
@@ -200,18 +206,24 @@ export function DashboardHome() {
           ) : null}
         </div>
         <p className="mt-4 text-sm text-muted">
-          A daily ritual for both of you — not a tracker.
+          Your check-in first — partner can join when ready.
         </p>
       </header>
 
       {ritualStep < 3 ? (
         <>
-          <PersonToggle
-            active={activePerson}
-            onChange={setActivePerson}
-            meDone={meDone}
-            partnerDone={partnerDone}
-          />
+          {showPartnerToggle || !meDone ? (
+            <PersonToggle
+              active={activePerson}
+              onChange={setActivePerson}
+              meDone={meDone}
+              partnerDone={partnerDone}
+            />
+          ) : (
+            <p className="rounded-full bg-primary-soft/60 px-4 py-2 text-center text-sm text-primary">
+              Your check-in is complete
+            </p>
+          )}
           <div className="mt-8">
             <RitualProgress step={ritualStep} />
           </div>
@@ -234,14 +246,17 @@ export function DashboardHome() {
             disabled={!canContinue}
             className="mt-10 w-full rounded-full bg-primary py-4 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-opacity disabled:opacity-40"
           >
-            {ritualStep === 1
-              ? "Continue"
-              : bothDone || (activePerson === "me" ? partnerDone : meDone)
-                ? "See tonight's vibe"
-                : activePerson === "me"
-                  ? "Continue · partner check-in next"
-                  : "Continue · your check-in next"}
+            {continueButtonLabel()}
           </button>
+          {ritualStep === 2 && activePerson === "me" && meDone && partnerPending ? (
+            <button
+              type="button"
+              onClick={startPartnerCheckIn}
+              className="mt-4 w-full text-center text-sm text-muted hover:text-primary"
+            >
+              Optional: add partner check-in →
+            </button>
+          ) : null}
         </>
       ) : (
         <div className="space-y-8">
@@ -251,6 +266,8 @@ export function DashboardHome() {
             partnerMoods={partnerCheckIn.moods}
             meNeeds={todayNeeds}
             partnerNeeds={partnerCheckIn.needs}
+            partnerPending={partnerPending}
+            onAddPartnerCheckIn={partnerPending ? startPartnerCheckIn : undefined}
           />
           <RitualChallengeCard ritual={dailyRitual} />
           <RepairModeCard />
@@ -262,7 +279,7 @@ export function DashboardHome() {
             }}
             className="w-full text-center text-sm text-primary"
           >
-            Update check-in
+            Update your check-in
           </button>
         </div>
       )}
