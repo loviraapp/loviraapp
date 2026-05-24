@@ -1,16 +1,32 @@
 import type { EmotionalSupportProfile } from "@/types/support-preferences";
-import type { CoupleProfile } from "@/types/couple-profile";
+import type { CoupleProfile, LoviraHelpId } from "@/types/couple-profile";
 
 const KEY = "lovira:coupleProfile";
+
+function normalizeCoupleProfile(raw: Partial<CoupleProfile>): CoupleProfile | null {
+  if (!raw.yourName || typeof raw.yourName !== "string") return null;
+  return {
+    yourName: raw.yourName,
+    partnerName: typeof raw.partnerName === "string" ? raw.partnerName : "",
+    anniversary: raw.anniversary,
+    comforts: Array.isArray(raw.comforts) ? raw.comforts : [],
+    triggers: Array.isArray(raw.triggers) ? raw.triggers : [],
+    loviraHelp: Array.isArray(raw.loviraHelp)
+      ? raw.loviraHelp
+      : (["daily_checkins", "relationship_rituals", "gentle_insights"] as LoviraHelpId[]),
+    completedAt: raw.completedAt ?? new Date().toISOString(),
+  };
+}
 
 export function getCoupleProfile(): CoupleProfile | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as CoupleProfile;
-    if (!parsed.yourName || !parsed.completedAt) return null;
-    return parsed;
+    const parsed = JSON.parse(raw) as Partial<CoupleProfile>;
+    const normalized = normalizeCoupleProfile(parsed);
+    if (!normalized?.yourName) return null;
+    return normalized;
   } catch {
     return null;
   }
