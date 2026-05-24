@@ -1,5 +1,5 @@
 import type { UserRole } from "@/types/role";
-import { hasSupportProfile } from "@/lib/support-profile";
+import { hasCoupleProfile } from "@/lib/couple-profile";
 
 const KEYS = {
   userRole: "lovira:userRole",
@@ -17,11 +17,9 @@ export function setUserRole(role: UserRole): void {
 }
 
 export function isOnboardingComplete(): boolean {
-  const role = getUserRole();
-  if (!role) return false;
-  return hasSupportProfile(role);
+  return hasCoupleProfile();
 }
 
 export function clearOnboardingForRoleChange(): void {
-  // Role switch re-runs preference setup for the new role if missing.
+  // Couple profile persists; revisit onboarding to update.
 }

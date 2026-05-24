@@ -2,7 +2,7 @@ import { WelcomeScreen } from "@/components/onboarding/welcome-screen";
 
 export default function OnboardingPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-dvh bg-background">
       <WelcomeScreen />
     </main>
   );

@@ -22,14 +22,9 @@ import {
   loadRitualCompletedDates,
   markRitualComplete,
 } from "@/lib/streak";
-import { getUserRole } from "@/lib/role";
-import {
-  getSupportProfile,
-  getPartnerRole,
-} from "@/lib/support-profile";
+import { getCoupleProfile, getCoupleProfileAsEmotionalProfile } from "@/lib/couple-profile";
 import {
   getPersonalizedSupport,
-  getPartnerSupportHint,
 } from "@/lib/personalized-support";
 import { PersonalizedSupportCard } from "./personalized-support-card";
 import { SupportPreferencesEditor } from "./support-preferences-editor";
@@ -63,7 +58,7 @@ export function DashboardHome() {
   const [partnerCheckIn, setPartnerCheckIn] =
     useState<PartnerCheckIn>(EMPTY_PARTNER);
   const [ritualDone, setRitualDone] = useState(false);
-  const [userRole, setUserRole] = useState<ReturnType<typeof getUserRole>>(null);
+  const [coupleProfile, setCoupleProfile] = useState<ReturnType<typeof getCoupleProfile>>(null);
   const [showPreferencesEditor, setShowPreferencesEditor] = useState(false);
 
   const todayKey = getTodayKey();
@@ -80,7 +75,7 @@ export function DashboardHome() {
     setTodayNeeds(getNeedsForDate(todayKey));
     setPartnerCheckIn(normalizePartnerCheckIn(getPartnerCheckIn(todayKey)));
     setRitualDone(loadRitualCompletedDates().includes(todayKey));
-    setUserRole(getUserRole());
+    setCoupleProfile(getCoupleProfile());
     setHydrated(true);
   }, [todayKey]);
 
@@ -107,10 +102,7 @@ export function DashboardHome() {
 
   const dailyRitual = useMemo(() => getDailyRitual(todayKey), [todayKey]);
 
-  const myProfile = userRole ? getSupportProfile(userRole) : null;
-  const partnerProfile = userRole
-    ? getSupportProfile(getPartnerRole(userRole))
-    : null;
+  const myProfile = getCoupleProfileAsEmotionalProfile();
 
   const personalizedInsight = meDone
     ? getPersonalizedSupport({
@@ -121,16 +113,7 @@ export function DashboardHome() {
       })
     : null;
 
-  const partnerHint =
-    meDone && partnerProfile
-      ? getPartnerSupportHint({
-          moods: partnerCheckIn.moods,
-          needs: partnerCheckIn.needs,
-          vibe,
-          profile: myProfile,
-          partnerProfile,
-        })
-      : null;
+  const partnerHint = null;
 
   const softStreaks = hydrated ? getSoftStreaks() : [];
   const stars = hydrated ? getConstellationStars() : [];
@@ -203,6 +186,11 @@ export function DashboardHome() {
     <div className="dashboard-shell mx-auto max-w-md px-5 pb-28 pt-8">
       <header className="mb-10">
         <h1 className="font-display text-[1.75rem] text-foreground">Lovira</h1>
+        {coupleProfile ? (
+          <p className="mt-1 text-sm text-muted">
+            {coupleProfile.yourName} & {coupleProfile.partnerName}
+          </p>
+        ) : null}
         <p className="mt-1 text-sm text-muted">{todayLabel}</p>
       </header>
 
@@ -315,10 +303,12 @@ export function DashboardHome() {
             </button>
           )}
           <RepairModeCard />
-          {showPreferencesEditor && userRole ? (
+          {showPreferencesEditor ? (
             <SupportPreferencesEditor
-              role={userRole}
-              onClose={() => setShowPreferencesEditor(false)}
+              onClose={() => {
+                setShowPreferencesEditor(false);
+                setCoupleProfile(getCoupleProfile());
+              }}
             />
           ) : (
             <button
@@ -344,7 +334,7 @@ export function DashboardHome() {
             href="/onboarding"
             className="block text-center text-sm text-primary"
           >
-            Switch role & preferences
+            Edit couple setup
           </Link>
           <Link href="/" className="block text-center text-xs text-muted">
             Home

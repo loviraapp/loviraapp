@@ -10,6 +10,26 @@ export type PreferenceOption<T extends string> = {
   label: string;
 };
 
+export const ONBOARDING_COMFORT_OPTIONS: PreferenceOption<ComfortPreferenceId>[] = [
+  { id: "chocolate_snacks", emoji: "🍫", label: "Comfort snacks" },
+  { id: "hugs_affection", emoji: "🫂", label: "Hugs" },
+  { id: "tea_coffee", emoji: "☕", label: "Tea/coffee" },
+  { id: "quiet_time", emoji: "🌙", label: "Quiet time" },
+  { id: "walk_together", emoji: "🚶", label: "Walks" },
+  { id: "music", emoji: "🎧", label: "Music" },
+  { id: "humor", emoji: "😂", label: "Humor" },
+  { id: "chores", emoji: "🧹", label: "Help with chores" },
+  { id: "comfort_media", emoji: "📺", label: "Comfort movies" },
+  { id: "listening", emoji: "💬", label: "Listening without fixing" },
+];
+
+export const LOVIRA_HELP_OPTIONS = [
+  { id: "daily_checkins" as const, emoji: "✨", label: "Daily emotional check-ins" },
+  { id: "relationship_rituals" as const, emoji: "🌙", label: "Relationship rituals" },
+  { id: "gentle_insights" as const, emoji: "💛", label: "Gentle support insights" },
+  { id: "reconnection" as const, emoji: "🔥", label: "Reconnection after tense days" },
+];
+
 export const COMFORT_OPTIONS: PreferenceOption<ComfortPreferenceId>[] = [
   { id: "chocolate_snacks", emoji: "🍫", label: "Chocolate/snacks" },
   { id: "hugs_affection", emoji: "🫂", label: "Hugs/affection" },
