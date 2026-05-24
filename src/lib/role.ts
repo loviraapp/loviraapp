@@ -1,8 +1,8 @@
 import type { UserRole } from "@/types/role";
+import { hasSupportProfile } from "@/lib/support-profile";
 
 const KEYS = {
   userRole: "lovira:userRole",
-  onboardingComplete: "lovira:onboardingComplete",
 } as const;
 
 export function getUserRole(): UserRole | null {
@@ -14,14 +14,14 @@ export function getUserRole(): UserRole | null {
 
 export function setUserRole(role: UserRole): void {
   localStorage.setItem(KEYS.userRole, role);
-  localStorage.setItem(KEYS.onboardingComplete, "true");
 }
 
 export function isOnboardingComplete(): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(KEYS.onboardingComplete) === "true";
+  const role = getUserRole();
+  if (!role) return false;
+  return hasSupportProfile(role);
 }
 
 export function clearOnboardingForRoleChange(): void {
-  localStorage.removeItem(KEYS.onboardingComplete);
+  // Role switch re-runs preference setup for the new role if missing.
 }

@@ -273,6 +273,34 @@ body {
   border: 1px solid rgb(232 228 240 / 0.6);
 }
 
+.personalized-support {
+  border: 1px solid rgb(232 228 240 / 0.5);
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.95) 0%,
+    var(--primary-soft) 100%
+  );
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.45s ease-out both;
+}
+
+.preference-step {
+  animation: fade-in 0.35s ease-out both;
+}
+
 html {
   scroll-behavior: smooth;
 }

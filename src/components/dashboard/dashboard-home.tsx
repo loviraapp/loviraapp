@@ -22,6 +22,17 @@ import {
   loadRitualCompletedDates,
   markRitualComplete,
 } from "@/lib/streak";
+import { getUserRole } from "@/lib/role";
+import {
+  getSupportProfile,
+  getPartnerRole,
+} from "@/lib/support-profile";
+import {
+  getPersonalizedSupport,
+  getPartnerSupportHint,
+} from "@/lib/personalized-support";
+import { PersonalizedSupportCard } from "./personalized-support-card";
+import { SupportPreferencesEditor } from "./support-preferences-editor";
 import { CheckInFlow } from "./check-in-flow";
 import { GlanceSummary } from "./glance-summary";
 import { VibeHero } from "./vibe-hero";
@@ -52,6 +63,8 @@ export function DashboardHome() {
   const [partnerCheckIn, setPartnerCheckIn] =
     useState<PartnerCheckIn>(EMPTY_PARTNER);
   const [ritualDone, setRitualDone] = useState(false);
+  const [userRole, setUserRole] = useState<ReturnType<typeof getUserRole>>(null);
+  const [showPreferencesEditor, setShowPreferencesEditor] = useState(false);
 
   const todayKey = getTodayKey();
   const todayLabel = new Date().toLocaleDateString(undefined, {
@@ -67,6 +80,7 @@ export function DashboardHome() {
     setTodayNeeds(getNeedsForDate(todayKey));
     setPartnerCheckIn(normalizePartnerCheckIn(getPartnerCheckIn(todayKey)));
     setRitualDone(loadRitualCompletedDates().includes(todayKey));
+    setUserRole(getUserRole());
     setHydrated(true);
   }, [todayKey]);
 
@@ -92,6 +106,32 @@ export function DashboardHome() {
   );
 
   const dailyRitual = useMemo(() => getDailyRitual(todayKey), [todayKey]);
+
+  const myProfile = userRole ? getSupportProfile(userRole) : null;
+  const partnerProfile = userRole
+    ? getSupportProfile(getPartnerRole(userRole))
+    : null;
+
+  const personalizedInsight = meDone
+    ? getPersonalizedSupport({
+        moods: todayMoods,
+        needs: todayNeeds,
+        vibe,
+        profile: myProfile,
+      })
+    : null;
+
+  const partnerHint =
+    meDone && partnerProfile
+      ? getPartnerSupportHint({
+          moods: partnerCheckIn.moods,
+          needs: partnerCheckIn.needs,
+          vibe,
+          profile: myProfile,
+          partnerProfile,
+        })
+      : null;
+
   const softStreaks = hydrated ? getSoftStreaks() : [];
   const stars = hydrated ? getConstellationStars() : [];
 
@@ -195,6 +235,13 @@ export function DashboardHome() {
 
           <VibeHero vibe={vibe} />
 
+          {personalizedInsight ? (
+            <PersonalizedSupportCard
+              insight={personalizedInsight}
+              partnerHint={partnerHint}
+            />
+          ) : null}
+
           <RitualCard
             ritual={dailyRitual}
             completed={ritualDone}
@@ -268,6 +315,21 @@ export function DashboardHome() {
             </button>
           )}
           <RepairModeCard />
+          {showPreferencesEditor && userRole ? (
+            <SupportPreferencesEditor
+              role={userRole}
+              onClose={() => setShowPreferencesEditor(false)}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowPreferencesEditor(true)}
+              className="more-insights-row w-full text-left"
+            >
+              <span className="text-sm text-foreground">Support preferences</span>
+              <span className="text-sm text-muted">Edit</span>
+            </button>
+          )}
           <PeriodDateForm
             value={lastPeriodStart}
             onChange={(date) => {
@@ -282,7 +344,7 @@ export function DashboardHome() {
             href="/onboarding"
             className="block text-center text-sm text-primary"
           >
-            Switch role
+            Switch role & preferences
           </Link>
           <Link href="/" className="block text-center text-xs text-muted">
             Home
