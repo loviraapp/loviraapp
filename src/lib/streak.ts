@@ -14,6 +14,22 @@ export function loadCompletedDates(): string[] {
   }
 }
 
+const RITUAL_KEY = "lovira:ritualCompletedDates";
+
+export function loadRitualCompletedDates(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(RITUAL_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed)
+      ? parsed.filter((d): d is string => typeof d === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export function markDayComplete(dateKey: string): void {
   const dates = loadCompletedDates();
   if (!dates.includes(dateKey)) {
@@ -21,6 +37,16 @@ export function markDayComplete(dateKey: string): void {
     dates.sort();
     localStorage.setItem(KEY, JSON.stringify(dates));
   }
+}
+
+export function markRitualComplete(dateKey: string): void {
+  const dates = loadRitualCompletedDates();
+  if (!dates.includes(dateKey)) {
+    dates.push(dateKey);
+    dates.sort();
+    localStorage.setItem(RITUAL_KEY, JSON.stringify(dates));
+  }
+  markDayComplete(dateKey);
 }
 
 export function getConnectionStreak(dateKey: string): number {

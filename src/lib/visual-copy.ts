@@ -12,16 +12,16 @@ export const PHASE_VISUAL: Record<
 
 /** Unified glance emojis — emotional, not clinical */
 export const MOOD_GLANCE: Record<MoodId, { emoji: string; short: string }> = {
-  calm: { emoji: "🌿", short: "Calm" },
-  tired: { emoji: "😴", short: "Tired" },
-  sensitive: { emoji: "🌙", short: "Sensitive" },
-  stressed: { emoji: "⚡", short: "Stressed" },
-  overwhelmed: { emoji: "🌧️", short: "Emotional" },
-  irritated: { emoji: "😤", short: "Frustrated" },
-  affectionate: { emoji: "🤍", short: "Warm" },
-  low_energy: { emoji: "🔋", short: "Low" },
-  hopeful: { emoji: "✨", short: "Hopeful" },
-  quiet: { emoji: "🤫", short: "Quiet" },
+  calm: { emoji: "🌿", short: "Feeling calm" },
+  tired: { emoji: "😴", short: "A little tired" },
+  sensitive: { emoji: "🌙", short: "Feeling sensitive" },
+  stressed: { emoji: "⚡", short: "Carrying some stress" },
+  overwhelmed: { emoji: "🌧️", short: "A lot to hold today" },
+  irritated: { emoji: "😤", short: "A bit on edge" },
+  affectionate: { emoji: "🤍", short: "Warm and open" },
+  low_energy: { emoji: "🔋", short: "Running a little low" },
+  hopeful: { emoji: "✨", short: "Quietly hopeful" },
+  quiet: { emoji: "🤫", short: "Needing quiet" },
 };
 
 export const ENERGY_GLANCE: Record<

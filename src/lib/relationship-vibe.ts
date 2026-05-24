@@ -33,18 +33,15 @@ export function getRelationshipVibe(
 
   if (wantsPlay(allNeeds) && !eitherHeavy) {
     return {
-      emoji: "✨",
+      emoji: "🔥",
       title: "Playful evening",
       line: "Lightness and warmth may land best tonight.",
     };
   }
 
-  if (
-    allNeeds.includes("reassurance") ||
-    allNeeds.includes("appreciation")
-  ) {
+  if (allNeeds.includes("reassurance") || allNeeds.includes("appreciation")) {
     return {
-      emoji: "🫶",
+      emoji: "✨",
       title: "Gentle reconnection",
       line: "Small reassurance may go a long way.",
     };
@@ -52,24 +49,28 @@ export function getRelationshipVibe(
 
   if (wantsSpace(me.needs) !== wantsSpace(partner.needs)) {
     return {
-      emoji: "💫",
+      emoji: "💛",
       title: "Softness over solving",
       line: "Honor different needs — closeness and quiet both count.",
     };
   }
 
-  if (allMoods.includes("hopeful") || allMoods.includes("affectionate")) {
+  if (
+    allMoods.includes("calm") ||
+    allMoods.includes("quiet") ||
+    allMoods.includes("hopeful")
+  ) {
     return {
       emoji: "🌿",
-      title: "Gentle reconnection",
-      line: "A calm moment together — no big talk required.",
+      title: "Slow and calm",
+      line: "A gentle pace together — no big talk required.",
     };
   }
 
   if (me.moods.length === 0 && partner.moods.length === 0) {
     return {
-      emoji: "🤝",
-      title: "Check in when ready",
+      emoji: "✨",
+      title: "Gentle reconnection",
       line: "A small ritual can make tonight feel closer.",
     };
   }
@@ -78,19 +79,19 @@ export function getRelationshipVibe(
     if (hasHeavy(me.moods) || wantsSpace(me.needs)) {
       return {
         emoji: "🌙",
-        title: "A softer evening may help",
+        title: "Low-energy comfort",
         line: "Honor what you need tonight — your check-in counts.",
       };
     }
     return {
       emoji: "🌿",
-      title: "Your vibe for tonight",
+      title: "Slow and calm",
       line: "When your partner checks in, your shared insight will deepen.",
     };
   }
 
   return {
-    emoji: "🌙",
+    emoji: "✨",
     title: "Gentle reconnection",
     line: "Meet each other where you are — kindness first.",
   };

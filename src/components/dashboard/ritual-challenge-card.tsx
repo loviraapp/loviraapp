@@ -15,8 +15,7 @@ export function RitualChallengeCard({ ritual }: RitualChallengeCardProps) {
           {ritual.emoji}
         </span>
         <div>
-          <p className="font-display text-lg text-foreground">{ritual.title}</p>
-          <p className="mt-1 text-sm text-muted">{ritual.line}</p>
+          <p className="font-display text-lg text-foreground">{ritual.text}</p>
         </div>
       </div>
     </section>

@@ -12,9 +12,9 @@ export function RitualStepNeeds({ selected, onToggle }: RitualStepNeedsProps) {
   return (
     <div>
       <h2 className="font-display text-2xl text-foreground">
-        What do you need today?
+        What may help tonight?
       </h2>
-      <p className="mt-2 text-sm text-muted">Choose what would help most.</p>
+      <p className="mt-2 text-sm text-muted">Choose what would feel most supportive.</p>
       <div className="mt-6 flex flex-wrap gap-2.5">
         {NEEDS.map((need) => {
           const active = selected.includes(need.id);

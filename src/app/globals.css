@@ -213,6 +213,66 @@ body {
   background: var(--secondary-soft);
 }
 
+.vibe-hero {
+  position: relative;
+  border-radius: 1.75rem;
+  padding: 2rem 1.5rem 2.25rem;
+  background: linear-gradient(
+    160deg,
+    rgb(255 255 255 / 0.98) 0%,
+    var(--primary-soft) 50%,
+    rgb(235 228 247 / 0.45) 100%
+  );
+  box-shadow:
+    0 2px 8px rgb(43 43 43 / 0.03),
+    0 24px 56px -20px rgb(142 125 190 / 0.32);
+}
+
+.vibe-hero-glow {
+  position: absolute;
+  inset: -20% -10% auto;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    rgb(181 158 219 / 0.22) 0%,
+    transparent 70%
+  );
+}
+
+.constellation {
+  background: linear-gradient(
+    180deg,
+    rgb(243 240 250 / 0.6) 0%,
+    rgb(250 248 247 / 0.2) 100%
+  );
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6);
+}
+
+.constellation-line {
+  stroke: rgb(142 125 190 / 0.18);
+  stroke-width: 1;
+}
+
+.constellation-star {
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(181 158 219 / 1) 0%,
+    rgb(142 125 190 / 0.5) 45%,
+    transparent 70%
+  );
+  box-shadow: 0 0 10px rgb(181 158 219 / 0.7);
+}
+
+.ritual-card {
+  border: 1px solid rgb(232 228 240 / 0.6);
+}
+
 html {
   scroll-behavior: smooth;
 }

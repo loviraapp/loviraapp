@@ -16,7 +16,7 @@ export function RitualStepMoods({ selected, onToggle }: RitualStepMoodsProps) {
       <h2 className="font-display text-2xl text-foreground">
         How are you feeling today?
       </h2>
-      <p className="mt-2 text-sm text-muted">Tap all that fit — no wrong answers.</p>
+      <p className="mt-2 text-sm text-muted">Tap what fits — no wrong answers.</p>
       <div className="mt-6 grid grid-cols-3 gap-3">
         {MOODS.map((mood) => {
           const g = getMoodGlance(mood.id);

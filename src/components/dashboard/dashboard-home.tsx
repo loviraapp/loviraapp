@@ -13,19 +13,24 @@ import {
   saveMoodsForDate,
   saveNeedsForDate,
   savePartnerCheckIn,
-  saveRitualStep,
-  getRitualStep,
 } from "@/lib/storage";
 import { getRelationshipVibe } from "@/lib/relationship-vibe";
 import { getDailyRitual } from "@/lib/daily-ritual";
-import { getConnectionStreak } from "@/lib/streak";
-import { PersonToggle, type ActivePerson } from "./person-toggle";
-import { RitualProgress } from "./ritual-progress";
+import { getSoftStreaks } from "@/lib/soft-streaks";
+import { getConstellationStars } from "@/lib/constellation";
+import {
+  loadRitualCompletedDates,
+  markRitualComplete,
+} from "@/lib/streak";
+import { CheckInFlow } from "./check-in-flow";
+import { GlanceSummary } from "./glance-summary";
+import { VibeHero } from "./vibe-hero";
+import { RitualCard } from "./ritual-card";
+import { ConstellationVisual } from "./constellation-visual";
+import { SoftStreakSection } from "./soft-streak-section";
+import { RepairModeCard } from "./repair-mode-card";
 import { RitualStepMoods } from "./ritual-step-moods";
 import { RitualStepNeeds } from "./ritual-step-needs";
-import { RitualStepVibe } from "./ritual-step-vibe";
-import { RitualChallengeCard } from "./ritual-challenge-card";
-import { RepairModeCard } from "./repair-mode-card";
 import { ExpandSection } from "@/components/ui/expand-section";
 import { PeriodDateForm } from "./period-date-form";
 
@@ -38,13 +43,15 @@ const EMPTY_PARTNER: PartnerCheckIn = {
 
 export function DashboardHome() {
   const [hydrated, setHydrated] = useState(false);
-  const [ritualStep, setRitualStep] = useState(1);
-  const [activePerson, setActivePerson] = useState<ActivePerson>("me");
+  const [editingCheckIn, setEditingCheckIn] = useState(false);
+  const [showPartnerFlow, setShowPartnerFlow] = useState(false);
+  const [partnerStep, setPartnerStep] = useState<1 | 2>(1);
   const [lastPeriodStart, setLastPeriodStart] = useState("");
   const [todayMoods, setTodayMoods] = useState<MoodId[]>([]);
   const [todayNeeds, setTodayNeeds] = useState<NeedId[]>([]);
   const [partnerCheckIn, setPartnerCheckIn] =
     useState<PartnerCheckIn>(EMPTY_PARTNER);
+  const [ritualDone, setRitualDone] = useState(false);
 
   const todayKey = getTodayKey();
   const todayLabel = new Date().toLocaleDateString(undefined, {
@@ -59,11 +66,7 @@ export function DashboardHome() {
     setTodayMoods(data.moodLog[todayKey] ?? []);
     setTodayNeeds(getNeedsForDate(todayKey));
     setPartnerCheckIn(normalizePartnerCheckIn(getPartnerCheckIn(todayKey)));
-    const savedStep = getRitualStep();
-    const meComplete =
-      (data.moodLog[todayKey]?.length ?? 0) > 0 &&
-      (data.needLog[todayKey]?.length ?? 0) > 0;
-    setRitualStep(meComplete && savedStep < 3 ? 3 : savedStep);
+    setRitualDone(loadRitualCompletedDates().includes(todayKey));
     setHydrated(true);
   }, [todayKey]);
 
@@ -75,15 +78,9 @@ export function DashboardHome() {
     [todayKey]
   );
 
-  const activeMoods =
-    activePerson === "me" ? todayMoods : partnerCheckIn.moods;
-  const activeNeeds =
-    activePerson === "me" ? todayNeeds : partnerCheckIn.needs;
-
   const meDone = todayMoods.length > 0 && todayNeeds.length > 0;
   const partnerDone =
     partnerCheckIn.moods.length > 0 && partnerCheckIn.needs.length > 0;
-  const partnerPending = !partnerDone;
 
   const vibe = useMemo(
     () =>
@@ -95,88 +92,58 @@ export function DashboardHome() {
   );
 
   const dailyRitual = useMemo(() => getDailyRitual(todayKey), [todayKey]);
-  const streak = useMemo(
-    () => (hydrated ? getConnectionStreak(todayKey) : 0),
-    [hydrated, todayKey]
-  );
+  const softStreaks = hydrated ? getSoftStreaks() : [];
+  const stars = hydrated ? getConstellationStars() : [];
 
   const handleMoodToggle = useCallback(
     (mood: MoodId) => {
-      if (activePerson === "me") {
-        setTodayMoods((prev) => {
-          const next = prev.includes(mood)
-            ? prev.filter((m) => m !== mood)
-            : [...prev, mood];
-          saveMoodsForDate(todayKey, next);
-          return next;
-        });
-      } else {
-        const nextMoods = partnerCheckIn.moods.includes(mood)
-          ? partnerCheckIn.moods.filter((m) => m !== mood)
-          : [...partnerCheckIn.moods, mood];
-        persistPartner({ ...partnerCheckIn, moods: nextMoods });
-      }
+      setTodayMoods((prev) => {
+        const next = prev.includes(mood)
+          ? prev.filter((m) => m !== mood)
+          : [...prev, mood];
+        saveMoodsForDate(todayKey, next);
+        return next;
+      });
     },
-    [activePerson, todayKey, partnerCheckIn, persistPartner]
+    [todayKey]
   );
 
   const handleNeedToggle = useCallback(
     (need: NeedId) => {
-      if (activePerson === "me") {
-        setTodayNeeds((prev) => {
-          const next = prev.includes(need)
-            ? prev.filter((n) => n !== need)
-            : [...prev, need];
-          saveNeedsForDate(todayKey, next);
-          return next;
-        });
-      } else {
-        const nextNeeds = partnerCheckIn.needs.includes(need)
-          ? partnerCheckIn.needs.filter((n) => n !== need)
-          : [...partnerCheckIn.needs, need];
-        persistPartner({ ...partnerCheckIn, needs: nextNeeds });
-      }
+      setTodayNeeds((prev) => {
+        const next = prev.includes(need)
+          ? prev.filter((n) => n !== need)
+          : [...prev, need];
+        saveNeedsForDate(todayKey, next);
+        return next;
+      });
     },
-    [activePerson, todayKey, partnerCheckIn, persistPartner]
+    [todayKey]
   );
 
-  const goToStep = useCallback((step: number) => {
-    setRitualStep(step);
-    saveRitualStep(step);
-  }, []);
+  const handlePartnerMoodToggle = useCallback(
+    (mood: MoodId) => {
+      const nextMoods = partnerCheckIn.moods.includes(mood)
+        ? partnerCheckIn.moods.filter((m) => m !== mood)
+        : [...partnerCheckIn.moods, mood];
+      persistPartner({ ...partnerCheckIn, moods: nextMoods });
+    },
+    [partnerCheckIn, persistPartner]
+  );
 
-  const startPartnerCheckIn = useCallback(() => {
-    setActivePerson("partner");
-    goToStep(1);
-  }, [goToStep]);
+  const handlePartnerNeedToggle = useCallback(
+    (need: NeedId) => {
+      const nextNeeds = partnerCheckIn.needs.includes(need)
+        ? partnerCheckIn.needs.filter((n) => n !== need)
+        : [...partnerCheckIn.needs, need];
+      persistPartner({ ...partnerCheckIn, needs: nextNeeds });
+    },
+    [partnerCheckIn, persistPartner]
+  );
 
-  const canContinue =
-    ritualStep === 1
-      ? activeMoods.length > 0
-      : ritualStep === 2
-        ? activeNeeds.length > 0
-        : false;
-
-  function handleContinue() {
-    if (ritualStep === 1 && activeMoods.length > 0) {
-      goToStep(2);
-      return;
-    }
-    if (ritualStep === 2 && activeNeeds.length > 0) {
-      if (
-        (activePerson === "me" && meDone) ||
-        (activePerson === "partner" && partnerDone)
-      ) {
-        goToStep(3);
-      }
-    }
-  }
-
-  function continueButtonLabel(): string {
-    if (ritualStep === 1) return "Continue";
-    if (activePerson === "me" && meDone) return "See tonight's vibe";
-    if (activePerson === "partner" && partnerDone) return "See tonight's vibe";
-    return "Continue";
+  function handleRitualComplete() {
+    markRitualComplete(todayKey);
+    setRitualDone(true);
   }
 
   if (!hydrated) {
@@ -190,103 +157,117 @@ export function DashboardHome() {
     );
   }
 
-  const showPartnerToggle = ritualStep < 3 && activePerson === "partner";
+  const showCheckInFlow = !meDone || editingCheckIn;
 
   return (
     <div className="dashboard-shell mx-auto max-w-md px-5 pb-28 pt-8">
-      <header className="mb-8">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h1 className="font-display text-[1.75rem] text-foreground">Lovira</h1>
-            <p className="mt-1 text-sm text-muted">{todayLabel}</p>
-          </div>
-          {streak > 0 ? (
-            <div className="rounded-full bg-card px-3 py-1.5 text-sm text-foreground">
-              <span aria-hidden>🔥</span> {streak} day{streak === 1 ? "" : "s"}
-            </div>
-          ) : null}
-        </div>
-        <p className="mt-4 text-sm text-muted">
-          Your check-in first — partner can join when ready.
-        </p>
+      <header className="mb-10">
+        <h1 className="font-display text-[1.75rem] text-foreground">Lovira</h1>
+        <p className="mt-1 text-sm text-muted">{todayLabel}</p>
       </header>
 
-      {ritualStep < 3 ? (
-        <>
-          {showPartnerToggle || !meDone ? (
-            <PersonToggle
-              active={activePerson}
-              onChange={setActivePerson}
-              meDone={meDone}
-              partnerDone={partnerDone}
-            />
-          ) : (
-            <p className="rounded-full bg-primary-soft/60 px-4 py-2 text-center text-sm text-primary">
-              Your check-in is complete
-            </p>
-          )}
-          <div className="mt-8">
-            <RitualProgress step={ritualStep} />
-          </div>
-          <div className="mt-10">
-            {ritualStep === 1 ? (
-              <RitualStepMoods
-                selected={activeMoods}
-                onToggle={handleMoodToggle}
-              />
-            ) : (
-              <RitualStepNeeds
-                selected={activeNeeds}
-                onToggle={handleNeedToggle}
-              />
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={handleContinue}
-            disabled={!canContinue}
-            className="mt-10 w-full rounded-full bg-primary py-4 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-opacity disabled:opacity-40"
-          >
-            {continueButtonLabel()}
-          </button>
-          {ritualStep === 2 && activePerson === "me" && meDone && partnerPending ? (
+      {showCheckInFlow ? (
+        <div className="space-y-4">
+          <CheckInFlow
+            moods={todayMoods}
+            needs={todayNeeds}
+            onMoodToggle={handleMoodToggle}
+            onNeedToggle={handleNeedToggle}
+            onComplete={() => setEditingCheckIn(false)}
+          />
+          {meDone ? (
             <button
               type="button"
-              onClick={startPartnerCheckIn}
-              className="mt-4 w-full text-center text-sm text-muted hover:text-primary"
+              onClick={() => setEditingCheckIn(false)}
+              className="w-full text-center text-sm text-muted"
             >
-              Optional: add partner check-in →
+              Back to tonight
             </button>
           ) : null}
-        </>
+        </div>
       ) : (
-        <div className="space-y-8">
-          <RitualStepVibe
-            vibe={vibe}
-            meMoods={todayMoods}
-            partnerMoods={partnerCheckIn.moods}
-            meNeeds={todayNeeds}
-            partnerNeeds={partnerCheckIn.needs}
-            partnerPending={partnerPending}
-            onAddPartnerCheckIn={partnerPending ? startPartnerCheckIn : undefined}
+        <div className="companion-flow">
+          <GlanceSummary
+            moods={todayMoods}
+            needs={todayNeeds}
+            onEdit={() => setEditingCheckIn(true)}
           />
-          <RitualChallengeCard ritual={dailyRitual} />
-          <RepairModeCard />
-          <button
-            type="button"
-            onClick={() => {
-              goToStep(1);
-              setActivePerson("me");
-            }}
-            className="w-full text-center text-sm text-primary"
-          >
-            Update your check-in
-          </button>
+
+          <VibeHero vibe={vibe} />
+
+          <RitualCard
+            ritual={dailyRitual}
+            completed={ritualDone}
+            onComplete={handleRitualComplete}
+          />
+
+          <ConstellationVisual stars={stars} />
+
+          <SoftStreakSection streaks={softStreaks} />
         </div>
       )}
 
-      <div className="mt-10">
+      <div className="mt-12">
         <ExpandSection title="More">
+          {showPartnerFlow ? (
+            <div className="space-y-6 pb-4">
+              <p className="text-sm text-muted">
+                Optional — add when your partner is ready.
+              </p>
+              {partnerStep === 1 ? (
+                <RitualStepMoods
+                  selected={partnerCheckIn.moods}
+                  onToggle={handlePartnerMoodToggle}
+                />
+              ) : (
+                <RitualStepNeeds
+                  selected={partnerCheckIn.needs}
+                  onToggle={handlePartnerNeedToggle}
+                />
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  if (partnerStep === 1 && partnerCheckIn.moods.length > 0) {
+                    setPartnerStep(2);
+                  } else if (partnerStep === 2 && partnerCheckIn.needs.length > 0) {
+                    setShowPartnerFlow(false);
+                    setPartnerStep(1);
+                  }
+                }}
+                disabled={
+                  partnerStep === 1
+                    ? partnerCheckIn.moods.length === 0
+                    : partnerCheckIn.needs.length === 0
+                }
+                className="w-full rounded-full bg-primary/10 py-3 text-sm font-medium text-primary disabled:opacity-40"
+              >
+                {partnerStep === 1 ? "Continue" : "Save partner check-in"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPartnerFlow(false);
+                  setPartnerStep(1);
+                }}
+                className="w-full text-sm text-muted"
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowPartnerFlow(true)}
+              className="more-insights-row w-full text-left"
+            >
+              <span className="text-sm text-foreground">Partner check-in</span>
+              <span className="text-sm text-muted">
+                {partnerDone ? "Updated" : "Optional"}
+              </span>
+            </button>
+          )}
+          <RepairModeCard />
           <PeriodDateForm
             value={lastPeriodStart}
             onChange={(date) => {
