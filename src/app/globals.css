@@ -303,15 +303,18 @@ body {
     var(--background);
 }
 
-.onboarding-hero-content {
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgb(250 248 247 / 0.92) 12%,
-    var(--background) 100%
-  );
-  margin-top: -2rem;
-  border-radius: 1.75rem 1.75rem 0 0;
+.onboarding-hero {
+  animation: fade-in 0.5s ease-out both;
+}
+
+.onboarding-hero-art {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow:
+    0 4px 12px rgb(43 43 43 / 0.06),
+    0 20px 48px -16px rgb(142 125 190 / 0.35);
+  border: 1px solid rgb(212 200 232 / 0.8);
 }
 
 .onboarding-input {

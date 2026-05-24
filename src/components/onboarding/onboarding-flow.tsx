@@ -72,10 +72,27 @@ export function OnboardingFlow() {
     router.replace("/dashboard");
   }
 
+  function exploreDemo() {
+    saveCoupleProfile({
+      yourName: "Alex",
+      partnerName: "Jordan",
+      comforts: ["listening", "tea_coffee", "quiet_time"],
+      triggers: ["immediate_fixing"],
+      loviraHelp: ["daily_checkins", "relationship_rituals", "gentle_insights"],
+    });
+    setUserRole("tracking");
+    saveSupportProfile("tracking", {
+      comforts: ["listening", "tea_coffee", "quiet_time"],
+      triggers: ["immediate_fixing"],
+      supportStyles: [],
+    });
+    router.replace("/dashboard");
+  }
+
   if (step === 1) {
     return (
       <OnboardingShell>
-        <OnboardingHero onBegin={() => setStep(2)} />
+        <OnboardingHero onBegin={() => setStep(2)} onExploreDemo={exploreDemo} />
       </OnboardingShell>
     );
   }
