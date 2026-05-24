@@ -308,13 +308,13 @@ body {
 }
 
 .onboarding-hero-art {
-  border-radius: 1.25rem;
+  border-radius: 1.125rem;
   overflow: hidden;
-  background: #ffffff;
+  background: #faf8f7;
   box-shadow:
-    0 4px 12px rgb(43 43 43 / 0.06),
-    0 20px 48px -16px rgb(142 125 190 / 0.35);
-  border: 1px solid rgb(212 200 232 / 0.8);
+    0 1px 2px rgb(43 43 43 / 0.04),
+    0 12px 36px -12px rgb(92 84 112 / 0.18);
+  border: 1px solid rgb(212 200 232 / 0.55);
 }
 
 .onboarding-input {

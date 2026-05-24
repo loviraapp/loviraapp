@@ -14,15 +14,15 @@ export function OnboardingHero({ onBegin, onExploreDemo }: OnboardingHeroProps) 
         Lovira
       </p>
 
-      <figure className="onboarding-hero-art mx-auto mt-10 aspect-[320/200] w-full max-w-[18rem]">
+      <figure className="onboarding-hero-art mx-auto mt-9 aspect-[360/220] w-full max-w-[16.5rem]">
         <CoupleIllustration className="block h-full w-full" />
       </figure>
 
-      <div className="mt-10">
-        <h1 className="font-display text-[1.85rem] leading-[1.2] tracking-tight text-foreground sm:text-[2.125rem]">
+      <div className="mt-11">
+        <h1 className="font-display text-[1.9rem] font-medium leading-[1.18] tracking-tight text-foreground sm:text-[2.15rem]">
           Relationships feel better when both people feel understood.
         </h1>
-        <p className="mt-5 text-base leading-relaxed text-muted">
+        <p className="mt-5 text-[1.05rem] leading-relaxed text-muted/95">
           Lovira helps couples notice emotional needs, reconnect gently, and
           support each other better.
         </p>
