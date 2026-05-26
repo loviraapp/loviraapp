@@ -12,31 +12,13 @@ import {
   saveLastPeriodStart,
   saveMoodsForDate,
   saveNeedsForDate,
-  savePartnerCheckIn,
 } from "@/lib/storage";
 import { getRelationshipVibe } from "@/lib/relationship-vibe";
-import { getDailyRitual } from "@/lib/daily-ritual";
-import { getSoftStreaks } from "@/lib/soft-streaks";
-import { getConstellationStars } from "@/lib/constellation";
-import {
-  loadRitualCompletedDates,
-  markRitualComplete,
-} from "@/lib/streak";
-import { getCoupleProfile, getCoupleProfileAsEmotionalProfile } from "@/lib/couple-profile";
-import {
-  getPersonalizedSupport,
-} from "@/lib/personalized-support";
-import { PersonalizedSupportCard } from "./personalized-support-card";
-import { SupportPreferencesEditor } from "./support-preferences-editor";
+import { getCoupleProfile } from "@/lib/couple-profile";
+import { getEmotionalInsight, getTodaysConnection } from "@/lib/lovira-home";
+import { LoviraHome } from "./lovira-home";
 import { CheckInFlow } from "./check-in-flow";
-import { GlanceSummary } from "./glance-summary";
-import { VibeHero } from "./vibe-hero";
-import { RitualCard } from "./ritual-card";
-import { ConstellationVisual } from "./constellation-visual";
-import { SoftStreakSection } from "./soft-streak-section";
-import { RepairModeCard } from "./repair-mode-card";
-import { RitualStepMoods } from "./ritual-step-moods";
-import { RitualStepNeeds } from "./ritual-step-needs";
+import { SupportPreferencesEditor } from "./support-preferences-editor";
 import { ExpandSection } from "@/components/ui/expand-section";
 import { PeriodDateForm } from "./period-date-form";
 
@@ -50,14 +32,11 @@ const EMPTY_PARTNER: PartnerCheckIn = {
 export function DashboardHome() {
   const [hydrated, setHydrated] = useState(false);
   const [editingCheckIn, setEditingCheckIn] = useState(false);
-  const [showPartnerFlow, setShowPartnerFlow] = useState(false);
-  const [partnerStep, setPartnerStep] = useState<1 | 2>(1);
   const [lastPeriodStart, setLastPeriodStart] = useState("");
   const [todayMoods, setTodayMoods] = useState<MoodId[]>([]);
   const [todayNeeds, setTodayNeeds] = useState<NeedId[]>([]);
   const [partnerCheckIn, setPartnerCheckIn] =
     useState<PartnerCheckIn>(EMPTY_PARTNER);
-  const [ritualDone, setRitualDone] = useState(false);
   const [coupleProfile, setCoupleProfile] = useState<ReturnType<typeof getCoupleProfile>>(null);
   const [showPreferencesEditor, setShowPreferencesEditor] = useState(false);
 
@@ -74,22 +53,11 @@ export function DashboardHome() {
     setTodayMoods(data.moodLog[todayKey] ?? []);
     setTodayNeeds(getNeedsForDate(todayKey));
     setPartnerCheckIn(normalizePartnerCheckIn(getPartnerCheckIn(todayKey)));
-    setRitualDone(loadRitualCompletedDates().includes(todayKey));
     setCoupleProfile(getCoupleProfile());
     setHydrated(true);
   }, [todayKey]);
 
-  const persistPartner = useCallback(
-    (next: PartnerCheckIn) => {
-      setPartnerCheckIn(next);
-      savePartnerCheckIn(todayKey, next);
-    },
-    [todayKey]
-  );
-
   const meDone = todayMoods.length > 0 && todayNeeds.length > 0;
-  const partnerDone =
-    partnerCheckIn.moods.length > 0 && partnerCheckIn.needs.length > 0;
 
   const vibe = useMemo(
     () =>
@@ -100,23 +68,23 @@ export function DashboardHome() {
     [todayMoods, todayNeeds, partnerCheckIn]
   );
 
-  const dailyRitual = useMemo(() => getDailyRitual(todayKey), [todayKey]);
-
-  const myProfile = getCoupleProfileAsEmotionalProfile();
-
-  const personalizedInsight = meDone
-    ? getPersonalizedSupport({
+  const insight = useMemo(
+    () =>
+      getEmotionalInsight({
+        profile: coupleProfile,
         moods: todayMoods,
         needs: todayNeeds,
+        partnerCheckIn,
         vibe,
-        profile: myProfile,
-      })
-    : null;
+        meDone,
+      }),
+    [coupleProfile, todayMoods, todayNeeds, partnerCheckIn, vibe, meDone]
+  );
 
-  const partnerHint = null;
-
-  const softStreaks = hydrated ? getSoftStreaks() : [];
-  const stars = hydrated ? getConstellationStars() : [];
+  const connection = useMemo(
+    () => getTodaysConnection({ meDone, todayKey }),
+    [meDone, todayKey]
+  );
 
   const handleMoodToggle = useCallback(
     (mood: MoodId) => {
@@ -144,58 +112,38 @@ export function DashboardHome() {
     [todayKey]
   );
 
-  const handlePartnerMoodToggle = useCallback(
-    (mood: MoodId) => {
-      const nextMoods = partnerCheckIn.moods.includes(mood)
-        ? partnerCheckIn.moods.filter((m) => m !== mood)
-        : [...partnerCheckIn.moods, mood];
-      persistPartner({ ...partnerCheckIn, moods: nextMoods });
-    },
-    [partnerCheckIn, persistPartner]
-  );
-
-  const handlePartnerNeedToggle = useCallback(
-    (need: NeedId) => {
-      const nextNeeds = partnerCheckIn.needs.includes(need)
-        ? partnerCheckIn.needs.filter((n) => n !== need)
-        : [...partnerCheckIn.needs, need];
-      persistPartner({ ...partnerCheckIn, needs: nextNeeds });
-    },
-    [partnerCheckIn, persistPartner]
-  );
-
-  function handleRitualComplete() {
-    markRitualComplete(todayKey);
-    setRitualDone(true);
-  }
-
   if (!hydrated) {
     return (
-      <div className="dashboard-shell mx-auto max-w-md px-5 py-12">
-        <div className="animate-pulse space-y-6">
-          <div className="h-6 w-32 rounded-full bg-border/80" />
-          <div className="h-48 rounded-3xl bg-primary-soft/50" />
+      <div className="lv-dashboard mx-auto max-w-md px-5 py-12">
+        <div className="animate-pulse space-y-4">
+          <div className="h-5 w-28 rounded-full bg-border/80" />
+          <div className="h-36 rounded-3xl bg-primary-soft/40" />
+          <div className="h-28 rounded-3xl bg-border/30" />
+          <div className="h-40 rounded-3xl bg-primary-soft/50" />
         </div>
       </div>
     );
   }
 
-  const showCheckInFlow = !meDone || editingCheckIn;
+  const showCheckIn = editingCheckIn || !meDone;
 
   return (
-    <div className="dashboard-shell mx-auto max-w-md px-5 pb-28 pt-8">
-      <header className="mb-10">
-        <h1 className="font-display text-[1.75rem] text-foreground">Lovira</h1>
-        {coupleProfile ? (
-          <p className="mt-1 text-sm text-muted">
-            {coupleProfile.yourName} & {coupleProfile.partnerName}
-          </p>
-        ) : null}
-        <p className="mt-1 text-sm text-muted">{todayLabel}</p>
+    <div className="lv-dashboard mx-auto max-w-md px-5 pb-28 pt-8">
+      <header className="lv-dashboard-header">
+        <p className="lv-dashboard-eyebrow">Lovira</p>
+        <h1 className="lv-dashboard-title font-display">
+          {coupleProfile
+            ? `${coupleProfile.yourName} & ${coupleProfile.partnerName}`
+            : "Together"}
+        </h1>
+        <p className="lv-dashboard-date">{todayLabel}</p>
       </header>
 
-      {showCheckInFlow ? (
-        <div className="space-y-4">
+      {showCheckIn ? (
+        <div className="mt-6 space-y-4">
+          <p className="text-sm text-muted">
+            {meDone ? "Update today's check-in" : "A quiet moment for today"}
+          </p>
           <CheckInFlow
             moods={todayMoods}
             needs={todayNeeds}
@@ -209,100 +157,31 @@ export function DashboardHome() {
               onClick={() => setEditingCheckIn(false)}
               className="w-full text-center text-sm text-muted"
             >
-              Back to tonight
+              Back to home
             </button>
           ) : null}
         </div>
       ) : (
-        <div className="companion-flow">
-          <GlanceSummary
-            moods={todayMoods}
-            needs={todayNeeds}
-            onEdit={() => setEditingCheckIn(true)}
+        <div className="mt-6">
+          <LoviraHome
+            insight={insight}
+            connection={connection}
+            onConnectionTap={() => setEditingCheckIn(true)}
           />
-
-          <VibeHero vibe={vibe} />
-
-          {personalizedInsight ? (
-            <PersonalizedSupportCard
-              insight={personalizedInsight}
-              partnerHint={partnerHint}
-            />
-          ) : null}
-
-          <RitualCard
-            ritual={dailyRitual}
-            completed={ritualDone}
-            onComplete={handleRitualComplete}
-          />
-
-          <ConstellationVisual stars={stars} />
-
-          <SoftStreakSection streaks={softStreaks} />
         </div>
       )}
 
       <div className="mt-12">
-        <ExpandSection title="More">
-          {showPartnerFlow ? (
-            <div className="space-y-6 pb-4">
-              <p className="text-sm text-muted">
-                Optional — add when your partner is ready.
-              </p>
-              {partnerStep === 1 ? (
-                <RitualStepMoods
-                  selected={partnerCheckIn.moods}
-                  onToggle={handlePartnerMoodToggle}
-                />
-              ) : (
-                <RitualStepNeeds
-                  selected={partnerCheckIn.needs}
-                  onToggle={handlePartnerNeedToggle}
-                />
-              )}
-              <button
-                type="button"
-                onClick={() => {
-                  if (partnerStep === 1 && partnerCheckIn.moods.length > 0) {
-                    setPartnerStep(2);
-                  } else if (partnerStep === 2 && partnerCheckIn.needs.length > 0) {
-                    setShowPartnerFlow(false);
-                    setPartnerStep(1);
-                  }
-                }}
-                disabled={
-                  partnerStep === 1
-                    ? partnerCheckIn.moods.length === 0
-                    : partnerCheckIn.needs.length === 0
-                }
-                className="w-full rounded-full bg-primary/10 py-3 text-sm font-medium text-primary disabled:opacity-40"
-              >
-                {partnerStep === 1 ? "Continue" : "Save partner check-in"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowPartnerFlow(false);
-                  setPartnerStep(1);
-                }}
-                className="w-full text-sm text-muted"
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setShowPartnerFlow(true)}
-              className="more-insights-row w-full text-left"
-            >
-              <span className="text-sm text-foreground">Partner check-in</span>
-              <span className="text-sm text-muted">
-                {partnerDone ? "Updated" : "Optional"}
-              </span>
-            </button>
-          )}
-          <RepairModeCard />
+        <ExpandSection title="More, when you need it">
+          {coupleProfile?.emotionalPrefs?.privateCycle ? (
+            <PeriodDateForm
+              value={lastPeriodStart}
+              onChange={(date) => {
+                setLastPeriodStart(date);
+                saveLastPeriodStart(date || null);
+              }}
+            />
+          ) : null}
           {showPreferencesEditor ? (
             <SupportPreferencesEditor
               onClose={() => {
@@ -320,24 +199,16 @@ export function DashboardHome() {
               <span className="text-sm text-muted">Edit</span>
             </button>
           )}
-          <PeriodDateForm
-            value={lastPeriodStart}
-            onChange={(date) => {
-              setLastPeriodStart(date);
-              saveLastPeriodStart(date || null);
-            }}
-          />
-          <p className="text-xs text-muted">
-            Rhythm context stays optional — never the main story.
-          </p>
-          <Link
-            href="/onboarding"
-            className="block text-center text-sm text-primary"
-          >
-            Edit couple setup
+          <Link href="/connection-prompt" className="more-insights-row block">
+            <span className="text-sm text-foreground">Connection prompt</span>
+            <span className="text-sm text-muted">→</span>
           </Link>
-          <Link href="/" className="block text-center text-xs text-muted">
-            Home
+          <Link href="/reel-to-real" className="more-insights-row block">
+            <span className="text-sm text-muted">Optional: reel to conversation</span>
+            <span className="text-sm text-muted">→</span>
+          </Link>
+          <Link href="/onboarding" className="block text-center text-sm text-primary">
+            Edit relationship setup
           </Link>
         </ExpandSection>
       </div>

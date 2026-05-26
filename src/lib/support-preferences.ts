@@ -24,11 +24,29 @@ export const ONBOARDING_COMFORT_OPTIONS: PreferenceOption<ComfortPreferenceId>[]
 ];
 
 export const LOVIRA_HELP_OPTIONS = [
-  { id: "daily_checkins" as const, emoji: "✨", label: "Daily emotional check-ins" },
-  { id: "relationship_rituals" as const, emoji: "🌙", label: "Relationship rituals" },
-  { id: "gentle_insights" as const, emoji: "💛", label: "Gentle support insights" },
-  { id: "reconnection" as const, emoji: "🔥", label: "Reconnection after tense days" },
+  { id: "together_mode" as const, emoji: "🤝", label: "Together Mode — phones down" },
+  { id: "daily_checkins" as const, emoji: "💜", label: "Daily emotional check-ins" },
+  { id: "connection_prompts" as const, emoji: "✨", label: "Connection prompts" },
+  { id: "gentle_insights" as const, emoji: "🌿", label: "Gentle support insights" },
+  { id: "reconnection" as const, emoji: "🕊️", label: "Reconnection after tense days" },
 ];
+
+const LEGACY_RITUAL_ID = "relationship_rituals" as const;
+
+export function normalizeLoviraHelpIds(
+  ids: string[] | undefined
+): import("@/types/couple-profile").LoviraHelpId[] {
+  const defaults: import("@/types/couple-profile").LoviraHelpId[] = [
+    "together_mode",
+    "daily_checkins",
+    "connection_prompts",
+  ];
+  if (!Array.isArray(ids) || ids.length === 0) return defaults;
+  const mapped = ids.map((id) =>
+    id === LEGACY_RITUAL_ID ? "together_mode" : id
+  ) as import("@/types/couple-profile").LoviraHelpId[];
+  return [...new Set(mapped)];
+}
 
 export const COMFORT_OPTIONS: PreferenceOption<ComfortPreferenceId>[] = [
   { id: "chocolate_snacks", emoji: "🍫", label: "Chocolate/snacks" },

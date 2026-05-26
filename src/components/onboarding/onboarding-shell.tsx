@@ -7,6 +7,8 @@ type OnboardingShellProps = {
 
 export function OnboardingShell({ children, className = "" }: OnboardingShellProps) {
   return (
-    <div className={`onboarding-shell min-h-dvh ${className}`}>{children}</div>
+    <div className={`onboarding-shell lv-onboarding-bg min-h-dvh ${className}`}>
+      {children}
+    </div>
   );
 }

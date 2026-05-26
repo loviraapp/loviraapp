@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Geist } from "next/font/google";
+import { Fraunces, Geist, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
 
@@ -12,6 +12,12 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+});
+
+const dancingScript = Dancing_Script({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 const siteUrl =
@@ -61,10 +67,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${fraunces.variable} min-h-screen antialiased`}
+        className={`${geistSans.variable} ${fraunces.variable} ${dancingScript.variable} min-h-screen antialiased`}
       >
         <SiteHeader />
-        <main>{children}</main>
+        <div className="app-shell">{children}</div>
       </body>
     </html>
   );

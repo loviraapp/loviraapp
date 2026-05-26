@@ -2,8 +2,6 @@ export function CoupleIllustration({ className = "" }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 360 220"
-      width="360"
-      height="220"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}

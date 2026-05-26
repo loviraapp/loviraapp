@@ -44,5 +44,6 @@ export type EmotionalSupportProfile = {
 export type PersonalizedSupportInsight = {
   emoji: string;
   line: string;
+  note?: string;
   framing: string;
 };

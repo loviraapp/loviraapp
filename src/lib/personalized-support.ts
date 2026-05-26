@@ -78,11 +78,11 @@ export function getPersonalizedSupport(
   const line = COMFORT_LINES[chosen];
 
   const avoidNote = getAvoidNote(profile.triggers);
-  const fullLine = avoidNote ? `${line} ${avoidNote}` : line;
 
   return {
     emoji: option?.emoji ?? vibe.emoji,
-    line: fullLine,
+    line,
+    note: avoidNote ?? undefined,
     framing: "What may help tonight",
   };
 }
