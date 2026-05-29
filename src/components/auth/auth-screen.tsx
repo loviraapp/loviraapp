@@ -64,6 +64,10 @@ export function AuthScreen() {
   const cooldownActive = cooldownMs > 0;
 
   const resolveAuthenticatedRoute = useCallback(async () => {
+    if (inviteNext?.startsWith("/invite/")) {
+      router.replace(inviteNext);
+      return;
+    }
     const res = await fetch("/api/me", { cache: "no-store" });
     const data = (await res.json()) as {
       user: { onboardingComplete?: boolean } | null;

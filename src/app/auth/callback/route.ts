@@ -76,9 +76,12 @@ export async function GET(request: Request) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const nextPath = user
-    ? await getPostAuthPath(user.id)
-    : "/onboarding";
+  const nextPath =
+    requestedNext.startsWith("/invite/")
+      ? requestedNext
+      : user
+        ? await getPostAuthPath(user.id)
+        : "/onboarding";
   response = NextResponse.redirect(`${origin}${nextPath}`);
 
   return response;
