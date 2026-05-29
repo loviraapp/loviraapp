@@ -1949,6 +1949,119 @@ html {
   color: rgb(220 200 240 / 0.6);
 }
 
+.cm-step--activity {
+  max-width: 20rem;
+  margin-inline: auto;
+}
+
+.cm-activity-title {
+  margin-top: 0.5rem;
+  font-size: 1.375rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #faf5ff;
+}
+
+.cm-activity-lead {
+  margin-top: 0.625rem;
+  max-width: 17rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgb(220 200 240 / 0.65);
+}
+
+.cm-activity-list {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cm-activity-option {
+  width: 100%;
+  text-align: left;
+  padding: 0.875rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.05);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.cm-activity-option--active {
+  border-color: rgb(232 160 184 / 0.45);
+  background: rgb(232 160 184 / 0.12);
+}
+
+.cm-activity-option-label {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #faf5ff;
+}
+
+.cm-activity-option-desc {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgb(220 200 240 / 0.55);
+}
+
+.cm-step--activity .cm-btn {
+  margin-top: 1.5rem;
+}
+
+.cm-wait-pulse {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.cm-wait-pulse span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgb(232 160 184 / 0.5);
+  animation: cm-pulse 1.4s ease-in-out infinite;
+}
+
+.cm-wait-pulse span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.cm-wait-pulse span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes cm-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cm-presence-activity {
+  margin-top: 1rem;
+  max-width: 15rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-style: italic;
+  color: rgb(232 200 220 / 0.55);
+}
+
 .cm-step--presence {
   position: relative;
   align-items: center;
@@ -2946,4 +3059,48 @@ html {
 
 .cp-cta--primary:active {
   transform: scale(0.98);
+}
+
+/* ——— Her wellness onboarding + home ——— */
+.her-wellness {
+  --her-accent: #7f77dd;
+  --her-accent-soft: #f0effa;
+  min-height: 100dvh;
+  background: var(--background);
+}
+
+.her-wellness-card {
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  background: var(--card-elevated);
+  padding: 1.25rem 1.25rem 1.5rem;
+  box-shadow: 0 2px 12px -4px rgb(127 119 221 / 0.12);
+}
+
+.her-wellness-btn-primary {
+  border-radius: 9999px;
+  background: var(--her-accent);
+  padding: 0.875rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  transition: opacity 0.15s ease;
+}
+
+.her-wellness-btn-primary:hover {
+  opacity: 0.92;
+}
+
+.her-wellness-btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@keyframes fade-in-opacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

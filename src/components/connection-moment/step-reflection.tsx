@@ -7,18 +7,26 @@ import {
   REFLECTION_FEELINGS,
   type ReflectionFeelingId,
   type TogetherDuration,
-  saveTogetherMoment,
 } from "@/lib/connection-moment";
+import type { TogetherActivityId } from "@/lib/together-activities";
 
 type StepReflectionProps = {
+  sessionId: string;
   durationMinutes: TogetherDuration;
+  activityId: TogetherActivityId;
+  userId: string | null;
+  reflections?: { user_id: string; feelings: string[] }[];
 };
 
 export function TogetherModeStepReflection({
-  durationMinutes,
+  sessionId,
+  userId,
+  reflections = [],
 }: StepReflectionProps) {
+  const alreadySubmitted = reflections.some((r) => r.user_id === userId);
   const [selected, setSelected] = useState<ReflectionFeelingId[]>([]);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(alreadySubmitted);
+  const [waiting, setWaiting] = useState(false);
 
   function toggle(id: ReflectionFeelingId) {
     setSelected((prev) =>
@@ -26,17 +34,20 @@ export function TogetherModeStepReflection({
     );
   }
 
-  function handleFinish() {
+  async function handleFinish() {
     if (selected.length === 0) return;
-    saveTogetherMoment({
-      completedAt: new Date().toISOString(),
-      feelings: selected,
-      durationMinutes,
+    setWaiting(true);
+    const res = await fetch(`/api/session/${sessionId}/reflect`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ feelings: selected }),
     });
-    setDone(true);
+    setWaiting(false);
+    if (res.ok) setDone(true);
   }
 
   if (done) {
+    const bothDone = reflections.length >= 2 || (reflections.length >= 1 && alreadySubmitted);
     return (
       <motion.div
         className="cm-step cm-step--center"
@@ -48,14 +59,13 @@ export function TogetherModeStepReflection({
           Small moments create strong relationships.
         </p>
         <p className="cm-closing-sub">
-          Put the phones away. You showed up for each other.
+          {bothDone
+            ? "This evening is saved in your shared memory."
+            : "Waiting for your partner to reflect…"}
         </p>
         <div className="cm-closing-actions">
-          <Link href="/" className="cm-btn cm-btn--primary">
+          <Link href="/dashboard" className="cm-btn cm-btn--primary">
             Back home
-          </Link>
-          <Link href="/dashboard" className="cm-text-btn">
-            Daily check-in
           </Link>
         </div>
       </motion.div>
@@ -73,7 +83,9 @@ export function TogetherModeStepReflection({
       <h2 className="cm-reflection-title font-display">
         How did this moment feel?
       </h2>
-      <p className="cm-reflection-sub">Choose what fits — then leave the screen behind.</p>
+      <p className="cm-reflection-sub">
+        Choose what fits — your partner will see this in your shared memory.
+      </p>
 
       <ul className="cm-feeling-list">
         {REFLECTION_FEELINGS.map((feeling, i) => {
@@ -102,11 +114,11 @@ export function TogetherModeStepReflection({
       <motion.button
         type="button"
         className="cm-btn cm-btn--primary"
-        disabled={selected.length === 0}
+        disabled={selected.length === 0 || waiting}
         onClick={handleFinish}
         whileTap={{ scale: 0.98 }}
       >
-        Complete Together Mode
+        {waiting ? "Saving…" : "Save reflection"}
       </motion.button>
     </motion.div>
   );

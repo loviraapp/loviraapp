@@ -34,6 +34,7 @@ export type SavedTogetherMoment = {
   completedAt: string;
   feelings: ReflectionFeelingId[];
   durationMinutes: TogetherDuration;
+  activityId?: string;
 };
 
 export function saveTogetherMoment(entry: SavedTogetherMoment) {

@@ -26,18 +26,17 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Lovira — Emotional wellness for couples",
+    default: "Lovira — Phones down, together",
     template: "%s · Lovira",
   },
   description:
-    "Emotional wellness for couples — rhythm awareness, multi-mood check-ins, private insight, and gentle partner support. Local-first, no account required.",
+    "The app couples open once a week to put their phones down together — one intentional moment in a distracted world.",
   applicationName: "Lovira",
   keywords: [
-    "couple wellness",
-    "cycle tracking",
-    "mood check-in",
-    "partner support",
-    "relationship wellness",
+    "couples app",
+    "together mode",
+    "phone-free time",
+    "relationship ritual",
   ],
   authors: [{ name: "Lovira" }],
   creator: "Lovira",
@@ -46,9 +45,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "Lovira",
-    title: "Lovira — Emotional wellness for couples",
+    title: "Lovira — Phones down, together",
     description:
-      "Rhythm awareness, multi-mood check-ins, and gentle partner support — saved privately on your device.",
+      "One intentional moment together each week. Invite your partner. Start Together Mode.",
   },
   twitter: {
     card: "summary_large_image",

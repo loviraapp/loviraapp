@@ -85,33 +85,6 @@ export function RelationshipFlow() {
     router.replace("/dashboard");
   }
 
-  function exploreDemo() {
-    saveCoupleProfile({
-      yourName: "Alex",
-      partnerName: "Jordan",
-      gender: "female",
-      relationshipStage: "living_together",
-      emotionalPrefs: { trackPhase: true, shareInsights: true },
-      screenHabits: {
-        phonesTogether: "sometimes",
-        feelDisconnected: "sometimes",
-        reconnectReminders: true,
-      },
-      supportStyle: "reassurance",
-      comforts: comfortsFromSupportStyle("reassurance"),
-      triggers: [],
-      loviraHelp: DEFAULT_HELP,
-      onboardingVersion: 2,
-    });
-    setUserRole("tracking");
-    saveSupportProfile("tracking", {
-      comforts: comfortsFromSupportStyle("reassurance"),
-      triggers: [],
-      supportStyles: [],
-    });
-    router.replace("/dashboard");
-  }
-
   function toggleEmotional(key: keyof EmotionalPrefs) {
     setEmotionalPrefs((p) => ({ ...p, [key]: !p[key] }));
   }
@@ -126,7 +99,6 @@ export function RelationshipFlow() {
           <figure className="lv-welcome-art">
             <CoupleIllustration className="h-full w-full" />
           </figure>
-          <p className="lv-guided-eyebrow">Welcome to Lovira</p>
           <h1 className="lv-welcome-headline font-display">
             Relationships deserve more than distracted moments.
           </h1>
@@ -141,9 +113,6 @@ export function RelationshipFlow() {
               onClick={() => setStep("setup")}
             >
               Continue
-            </button>
-            <button type="button" className="lv-btn lv-btn--ghost" onClick={exploreDemo}>
-              Explore demo
             </button>
           </div>
         </div>

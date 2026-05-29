@@ -7,9 +7,13 @@
     "dev:clean": "npm run dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:insights": "npx tsx scripts/test-phase-insights.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.8",
+    "@tabler/icons-react": "^3.44.0",
     "framer-motion": "^11.18.2",
     "next": "^15.3.3",
     "react": "^19.1.0",

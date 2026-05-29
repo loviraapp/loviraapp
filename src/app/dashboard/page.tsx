@@ -1,10 +1,10 @@
 import { DashboardView } from "@/components/dashboard/dashboard-view";
-import { OnboardingGate } from "@/components/dashboard/onboarding-gate";
+import { AuthGate } from "@/components/dashboard/auth-gate";
 
 export default function DashboardPage() {
   return (
-    <OnboardingGate>
+    <AuthGate>
       <DashboardView />
-    </OnboardingGate>
+    </AuthGate>
   );
 }

@@ -4,26 +4,6 @@ import Link from "next/link";
 import { LoviraLogo } from "./lovira-logo";
 import { IntroHeroImage } from "./intro-hero-image";
 
-const PILLARS: {
-  title: string;
-  line: string;
-  featured?: boolean;
-}[] = [
-  {
-    title: "Emotional Understanding",
-    line: "Gentle awareness of how you and your partner are really doing.",
-  },
-  {
-    title: "Today's Connection",
-    line: "One warm nudge a day — not another feed to scroll.",
-  },
-  {
-    title: "Together Mode",
-    line: "Phones down. Your person is here.",
-    featured: true,
-  },
-];
-
 export function IntroWelcome() {
   return (
     <div className="intro-home intro-home--minimal">
@@ -39,45 +19,60 @@ export function IntroWelcome() {
 
         <div className="intro-home-hero-copy">
           <h1 id="intro-hero-heading" className="intro-home-headline font-display">
-            Technology helping humans
+            Some weeks she needs more.
             <br />
-            <span className="intro-home-headline-accent">reconnect emotionally.</span>
+            <span className="intro-home-headline-accent">
+              Lovira helps you both understand why.
+            </span>
           </h1>
 
           <p className="intro-home-subhead">
-            Lovira helps couples understand each other better in a distracted world —
-            then put the phones away for real moments together.
+            Every few weeks, her emotional world shifts. Lovira gives both of you
+            the awareness to stay close — then puts the phones down.
           </p>
 
           <div className="intro-home-actions">
-            <Link href="/onboarding" className="intro-home-cta intro-home-cta--primary">
+            <Link href="/auth" className="intro-home-cta intro-home-cta--primary">
               <span className="intro-home-cta-shine" aria-hidden />
-              <span className="intro-home-cta-label">Begin your journey</span>
+              <span className="intro-home-cta-label">Get started</span>
             </Link>
-            <Link href="/dashboard" className="intro-home-cta intro-home-cta--secondary">
-              Open Lovira
+            <Link href="/auth" className="intro-home-cta intro-home-cta--secondary">
+              Sign in
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="intro-home-pillars" aria-label="Three gentle areas">
+      <section className="intro-home-pillars" aria-label="How it works">
         <ul className="intro-home-pillar-list">
-          {PILLARS.map((pillar) => (
-            <li
-              key={pillar.title}
-              className={`intro-home-pillar ${pillar.featured ? "intro-home-pillar--featured" : ""}`}
-            >
-              <h2 className="intro-home-pillar-title">{pillar.title}</h2>
-              <p className="intro-home-pillar-line">{pillar.line}</p>
-            </li>
-          ))}
+          <li className="intro-home-pillar">
+            <h2 className="intro-home-pillar-title">Emotional rhythm</h2>
+            <p className="intro-home-pillar-line">
+              Understand the emotional phases that shape her week — and how to
+              show up better.
+            </p>
+          </li>
+          <li className="intro-home-pillar">
+            <h2 className="intro-home-pillar-title">Today&apos;s nudge</h2>
+            <p className="intro-home-pillar-line">
+              One small action today. Based on where she actually is
+              emotionally.
+            </p>
+          </li>
+          <li className="intro-home-pillar intro-home-pillar--featured">
+            <h2 className="intro-home-pillar-title">Together Mode</h2>
+            <p className="intro-home-pillar-line">
+              When you&apos;ve both checked in — a shared moment that
+              doesn&apos;t need a screen.
+            </p>
+          </li>
         </ul>
       </section>
 
       <footer className="intro-home-footer">
         <p className="intro-home-footer-tagline">
-          Better offline moments — not more screen time.
+          Understanding her emotional rhythm is what makes putting the phone
+          down actually mean something.
         </p>
       </footer>
     </div>

@@ -7,32 +7,46 @@ import type { TogetherDuration } from "@/lib/connection-moment";
 
 type StepPresenceProps = {
   durationMinutes: TogetherDuration;
-  onComplete: () => void;
+  activityPresenceLine: string;
+  startedAt?: string | null;
+  onComplete?: () => void;
 };
+
+function secondsRemaining(
+  durationMinutes: TogetherDuration,
+  startedAt?: string | null
+): number {
+  const total = durationToSeconds(durationMinutes);
+  if (!startedAt) return total;
+  const elapsed = Math.floor(
+    (Date.now() - new Date(startedAt).getTime()) / 1000
+  );
+  return Math.max(0, total - elapsed);
+}
 
 export function TogetherModeStepPresence({
   durationMinutes,
+  activityPresenceLine,
+  startedAt,
   onComplete,
 }: StepPresenceProps) {
   const totalSeconds = durationToSeconds(durationMinutes);
-  const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
+  const [secondsLeft, setSecondsLeft] = useState(() =>
+    secondsRemaining(durationMinutes, startedAt)
+  );
   const completedRef = useRef(false);
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      setSecondsLeft((s) => {
-        if (s <= 1) {
-          if (!completedRef.current) {
-            completedRef.current = true;
-            onComplete();
-          }
-          return 0;
-        }
-        return s - 1;
-      });
+      const left = secondsRemaining(durationMinutes, startedAt);
+      setSecondsLeft(left);
+      if (left <= 0 && onComplete && !completedRef.current) {
+        completedRef.current = true;
+        onComplete();
+      }
     }, 1000);
     return () => window.clearInterval(id);
-  }, [onComplete]);
+  }, [durationMinutes, startedAt, onComplete]);
 
   const progress = ((totalSeconds - secondsLeft) / totalSeconds) * 100;
 
@@ -51,12 +65,12 @@ export function TogetherModeStepPresence({
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <p className="cm-presence-message font-display">
-        Now talk.
-      </p>
+      <p className="cm-presence-message font-display">Now talk.</p>
       <p className="cm-presence-sub">
         We&apos;ll quietly stay in the background.
       </p>
+
+      <p className="cm-presence-activity">{activityPresenceLine}</p>
 
       <div className="cm-timer-ring cm-timer-ring--minimal" aria-live="polite">
         <svg className="cm-timer-svg" viewBox="0 0 120 120" aria-hidden>
@@ -74,9 +88,11 @@ export function TogetherModeStepPresence({
         </span>
       </div>
 
-      <button type="button" className="cm-text-btn" onClick={onComplete}>
-        End when you&apos;re ready
-      </button>
+      {onComplete ? (
+        <button type="button" className="cm-text-btn" onClick={onComplete}>
+          End when you&apos;re ready
+        </button>
+      ) : null}
     </motion.div>
   );
 }

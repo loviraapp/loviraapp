@@ -10,8 +10,8 @@ export function SiteHeader() {
     pathname?.startsWith("/dashboard") ||
     pathname?.startsWith("/onboarding") ||
     pathname?.startsWith("/connection-moment") ||
-    pathname?.startsWith("/reel-to-real") ||
-    pathname?.startsWith("/connection-prompt")
+    pathname?.startsWith("/auth") ||
+    pathname?.startsWith("/invite")
   ) {
     return null;
   }

@@ -1,15 +1,14 @@
-import { RelationshipFlow } from "@/components/onboarding/relationship-flow";
+import { MvpOnboardingFlow } from "@/components/onboarding/mvp-onboarding-flow";
 
 export const metadata = {
-  title: "Set up your relationship flow",
-  description:
-    "A gentle onboarding to understand how you connect and build your Lovira ritual together.",
+  title: "Set up your couple space",
+  description: "Invite your partner and start your weekly Together Mode ritual.",
 };
 
 export default function OnboardingPage() {
   return (
     <main className="min-h-dvh bg-background">
-      <RelationshipFlow />
+      <MvpOnboardingFlow />
     </main>
   );
 }
