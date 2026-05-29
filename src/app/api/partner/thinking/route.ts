@@ -79,24 +79,17 @@ export async function POST() {
   const today = todayUtc();
   const { error } = await supabase
     .from("partner_signals")
-    .insert(
-      {
-        couple_id: couple.coupleId,
-        sender_id: user.id,
-        receiver_id: herMember.user_id,
-        signal_type: "thinking_of_you",
-        date: today,
-        created_at: new Date().toISOString(),
-      },
-      {
-        onConflict: "couple_id,sender_id,receiver_id,signal_type,date",
-        ignoreDuplicates: true,
-      }
-    )
-    .select("id")
-    .maybeSingle();
+    .insert({
+      couple_id: couple.coupleId,
+      sender_id: user.id,
+      receiver_id: herMember.user_id,
+      signal_type: "thinking_of_you",
+      date: today,
+      created_at: new Date().toISOString(),
+    });
 
-  if (error) {
+  // Unique daily duplicate is treated as already-sent success.
+  if (error && error.code !== "23505") {
     console.error("Signal failed:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
